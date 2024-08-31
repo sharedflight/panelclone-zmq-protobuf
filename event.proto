@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+package panelclone;
+
+message StateUpdate {
+  uint32 frame = 1;
+  uint32 indexTableNonce = 2;
+  repeated DrefValue drefChanges = 3;
+}
+
+message RegisterDref {
+  string dataref = 1;
+  int32 index = 2;
+}
+
+message DrefIndexTable {
+  uint32 tableNonce = 1;
+  map<string, uint32> drefIndexes = 2;
+}
+
+message Snapshot {
+  DrefIndexTable drefIndexTable = 1;
+  StateUpdate frameSnapshot = 2;
+}
+
+message DrefIntArrayValue {
+  int32 value = 1;
+  uint32 index = 2;
+}
+
+message DrefFloatArrayValue {
+  float value = 1;
+  uint32 index = 2;
+}
+
+message DrefByteValue {
+  bytes value = 1;
+  uint32 size = 2;
+}
+
+message DrefValue {
+  uint32 index = 1;
+  oneof value {
+    int32 intVal = 2;
+    DrefIntArrayValue intArrayVal = 3;
+    DrefFloatArrayValue floatArrayVal = 4;
+    double doubleVal = 5;
+    DrefByteValue byteVal = 6;
+  } 
+}
