@@ -10,6 +10,25 @@
 
 #include "event.pb.h"
 
+
+    /*
+
+    We do in the following order...
+
+    0. We request a list of datarefs to be monitored
+    1. Subscribe to get published stateupdates
+    2. We request a snapshot
+    3. We queue received stateupdates
+    4. We receive snapshot, drop state updates prior to snapshot, apply stateupdates
+       after snapshot
+
+    5. Announce we are in sync
+
+    6. Publish received state updates
+    7. Allow for pushing of dataref value changes (Tab complete of dref? :-))
+
+    */
+
 int interrupted = 0;
 
 void signal_handler(int signal_value) { interrupted = 1; }
@@ -25,6 +44,8 @@ void catch_signals() {
  
 int main( int argc, char *argv[] )
 {
+    catch_signals();
+
     // Create ZMQ Context
     zmq::context_t context ( 1 );
     // Create the Updater socket
@@ -36,7 +57,7 @@ int main( int argc, char *argv[] )
 
     //subscriber.set(ZMQ_SUBSCRIBE, "");
 
-    snapshot.set( zmq::sockopt::routing_id, "PEER2");
+    //snapshot.set( zmq::sockopt::routing_id, "PEER2");
 
     std::cout << "connecting..." << std::endl;
 
@@ -47,33 +68,42 @@ int main( int argc, char *argv[] )
 
     std::cout << "connected..." << std::endl;
 
-    int64_t sequence = 0;
-    std::string msg = "ICANHAZ?";
 
-    // Create zmq message
-    zmq::message_t request( msg.length() );
-    // Copy contents to zmq message
-    memcpy( request.data(), msg.c_str(), msg.length() );
-    // Send snapshot request message
-    
-    std::cout << "will send message " << msg << std::endl;
-    
-    try {
+    // Request a list of datarefs...
+    {
+        panelclone::StateRequest stateRequest;
+
+        auto newRegisteredDref = stateRequest.add_drefs();
+        newRegisteredDref->set_dataref("B742/ext_light/landing_inbd_L_sw");
+        newRegisteredDref->set_index(-1u);
+
+        newRegisteredDref = stateRequest.add_drefs();
+        newRegisteredDref->set_dataref("sim/time/to/party");
+        newRegisteredDref->set_index(2);
+
+        // Create zmq message
+        std::string data;
+        stateRequest.SerializeToString(&data);
+
+        zmq::message_t request( data.length() );
+        // Copy contents to zmq message
+        memcpy( request.data(), data.c_str(), data.length() );
+        // Send snapshot request message
         
-        snapshot.send( request );    
-        std::cout << "sending snapshot message " << msg << std::endl;
+        try {
+            snapshot.send( request );    
+            std::cout << "sending snapshot request with " << stateRequest.drefs_size() << " drefs" << std::endl;
 
-    } catch (zmq::error_t &e) {
-        std::cout << "interrupt received, proceeding..." << std::endl;
+        } catch (zmq::error_t &e) {
+            std::cout << "interrupt received, proceeding..." << std::endl;
+        }
+
     }
     
-    catch_signals();
-
     zmq_pollitem_t items [] = {
         { subscriber, 0, ZMQ_POLLIN, 0 },
         { snapshot, 0, ZMQ_POLLIN, 0 }
     };
-
 
     while (true) {
         
@@ -101,7 +131,6 @@ int main( int argc, char *argv[] )
 
                 std::cout << "size of msgs is " << msgs.size() << std::endl;
 
-
                 for (auto & message : msgs) {
                     
                     std::cout << "Here..." << std::endl;
@@ -109,7 +138,7 @@ int main( int argc, char *argv[] )
                     //  Process task
                     panelclone::Snapshot recvdSnapshot;
                     recvdSnapshot.ParseFromArray(message.data(), message.size());
-                    std::cout << "Received " << recvdSnapshot.framesnapshot().frame() << std::endl; 
+                    std::cout << "Received snapshot at frame " << recvdSnapshot.framesnapshot().frame() << " with " << recvdSnapshot.framesnapshot().drefchanges_size() << " drefs" << std::endl; 
                     //std::cout << "snapshot message: " << message.to_string() << std::endl;
                     // if (message.str() == "KTHXBAI") {
                     //     std::cout << "Ok received KTHXBAI" << std::endl;
@@ -119,7 +148,8 @@ int main( int argc, char *argv[] )
             }
 
         } catch (zmq::error_t &e) {
-            std::cout << "interrupt received, proceeding..." << std::endl;
+            std::cout << "interrupt received, killing program..." << std::endl;
+            interrupted = 1;
         }
 
         if (interrupted) {

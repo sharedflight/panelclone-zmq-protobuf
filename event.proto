@@ -4,8 +4,31 @@ package panelclone;
 
 message StateUpdate {
   uint32 frame = 1;
-  uint32 indexTableNonce = 2;
+  
+  // This only contains indexes for NEW drefs
+  // not present in previous state updates...
+  map<string, uint32> drefIndexes = 2;
+
+  // Changes in state...
   repeated DrefValue drefChanges = 3;
+}
+
+/*
+enum StateRequestMsgType {
+  DATAREF_REGISTER = 0;
+  SNAPSHOT_REQUEST = 1;
+}
+*/
+
+
+// NEED TO INCLUDE SOME KIND OF 
+// CHECK THAT WE HAVE THE RIGHT AIRCRAFT
+// AND RETURN AN EMPTY STATE WITH FRAME 0
+// ETC AS MESSAGE WE ARE NOT YET IN CORRECT AIRCRAFT
+
+message StateRequest {
+  //StateRequestMsgType type = 1;
+  repeated RegisterDref drefs = 2;
 }
 
 message RegisterDref {
@@ -13,13 +36,15 @@ message RegisterDref {
   int32 index = 2;
 }
 
+/*
 message DrefIndexTable {
   uint32 tableNonce = 1;
   map<string, uint32> drefIndexes = 2;
 }
+*/
 
 message Snapshot {
-  DrefIndexTable drefIndexTable = 1;
+  //DrefIndexTable drefIndexTable = 1;
   StateUpdate frameSnapshot = 2;
 }
 

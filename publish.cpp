@@ -68,51 +68,56 @@ int main( int argc, char *argv[] )
                 //  Process task
                 std::cout << "received collector message: " << message.str() << std::endl;
             }
-            if (items [1].revents & ZMQ_POLLIN) {
-                snapshot.recv(message, zmq::recv_flags::none);
-                //  Process weather update
-                std::cout << "received snapshot message: " << message.to_string() << std::endl;
-                if (message.to_string() == "ICANHAZ?") {
-                    std::cout << "received snapshot request!" << std::endl;
+            
+            if (items[1].revents & ZMQ_POLLIN) {
+                //snapshot.recv(message, zmq::recv_flags::none);
                 
-                    // std::string foobar = "KTHXBAI";
+                std::vector<zmq::message_t> msgs;
+                auto ret = zmq::recv_multipart(snapshot, std::back_inserter(msgs));
 
-                    // zmq::message_t request( foobar.length() );
-                    // // Copy contents to zmq message
-                    // memcpy( request.data(), foobar.c_str(), foobar.length() );
-                    // // Publish the message
-                    // std::array<zmq::const_buffer, 2> bufs = {
-                    //   zmq::str_buffer("PEER2"),
-                    //   //zmq::str_buffer(""),
-                    //   zmq::buffer(foobar)
-                    // };
-                    // zmq::send_multipart(snapshot, bufs);
-                    // std::cout << "sent " << foobar << " to PEER2.." << std::endl;
-
-                    panelclone::Snapshot txSnapshot;
-
-                    auto * indexTable = txSnapshot.mutable_drefindextable();
-                    auto * frameSnapshot = txSnapshot.mutable_framesnapshot();
-
-                    frameSnapshot->set_frame(i++);
-
-                    //trodes::proto::Event event;
-                    //event.set_name("myevent");
-                    //event.set_origin("myorigin");
-
-                    std::string data;
-                    txSnapshot.SerializeToString(&data);
-
-                    // Publish the message
-                    std::array<zmq::const_buffer, 2> bufs = {
-                      zmq::str_buffer("PEER2"),
-                      zmq::buffer(data)
-                    };
-                    zmq::send_multipart(snapshot, bufs);
-
-                    // send the reply to the client
-                    //socket.send(zmq::buffer(data), zmq::send_flags::none);
+                if (!ret) {
+                    return 1;
                 }
+
+                std::cout << "size of msgs is " << msgs.size() << std::endl;
+
+                std::string requestor = msgs[0].to_string();
+
+                auto & message = msgs[1];
+
+
+                std::cout << "raw msg is: " << message.str() << std::endl;
+
+                panelclone::StateRequest recvdStateRequest;
+                recvdStateRequest.ParseFromArray(message.data(), message.size());
+
+                std::cout << "received snapshot message from " << requestor << " with " << recvdStateRequest.drefs_size() << " daterefs" << std::endl;
+                
+                panelclone::Snapshot txSnapshot;
+
+                auto * frameSnapshot = txSnapshot.mutable_framesnapshot();
+
+                frameSnapshot->set_frame(i++);
+
+                auto drefChange = frameSnapshot->add_drefchanges();
+
+                drefChange->set_index(0);
+                drefChange->set_intval(10);
+
+                //trodes::proto::Event event;
+                //event.set_name("myevent");
+                //event.set_origin("myorigin");
+
+                std::string data;
+                txSnapshot.SerializeToString(&data);
+
+                // Publish the message
+                std::array<zmq::const_buffer, 2> bufs = {
+                  zmq::buffer(requestor),
+                  zmq::buffer(data)
+                };
+                zmq::send_multipart(snapshot, bufs);
+
             }
 
         } catch (zmq::error_t &e) {
