@@ -29,7 +29,7 @@
 
 #include "Dref.hpp"
 
-enum ValueType { INTVAL, FLOATVAL, DOUBLEVAL, INTARRAYVAL, FLOATARRAYVAL, STRINGVAL };
+enum ValueType { INTVAL, FLOATVAL, DOUBLEVAL, STRINGVAL };
 
 // We need to keep a "last sent" value in case we have multiple flight loops
 // per send ... 
@@ -44,15 +44,15 @@ enum ValueType { INTVAL, FLOATVAL, DOUBLEVAL, INTARRAYVAL, FLOATARRAYVAL, STRING
 struct PubValue
 {
     Dref *dref;
-    size_t index;
+    int index;
     std::variant<int, float, double, std::pair<std::string_view, size_t>> value;
     
     std::variant<int, float, double, std::pair<std::string_view, size_t>> last_sent_value;
     
-    XPLMDataTypeID chosenType;
+    ValueType chosenType;
     bool published;
 
-    void initValue() {
+    /*void initValue() {
         switch(chosenType) {
             case INTVAL:
                 value = dref->geti();
@@ -78,17 +78,21 @@ struct PubValue
         }
 
         last_sent_value = value;
-    }
+    }*/
 
     void flightLoopRead() {
         if (chosenType == INTVAL) {
-            value = dref->geti();
+            if (index == -1) {
+                value = dref->geti();
+            } else {
+                value = dref->geti(index);
+            }
         } else if (chosenType == FLOATVAL) {
-            value = dref->getf();
-        } else if (chosenType == INTARRAYVAL) {
-            value = dref->geti(index);
-        } else if (chosenType == FLOATARRAYVAL) {
-            value = dref->getf(index);
+            if (index == -1) {
+                value = dref->getf();
+            } else {
+                value = dref->getf(index);
+            }
         } else if (chosenType == DOUBLEVAL) {
             value = dref->getd();
         }
@@ -96,6 +100,10 @@ struct PubValue
 
     bool changed() {
         return (value != last_sent_value);
+    }
+
+    bool shouldSend() {
+        return (!published || changed());
     }
 
     void sent() {
@@ -108,16 +116,30 @@ class DatarefPublisher
 {
     std::mutex lock;
     
-    panelclone::StateUpdate latest_frame;
+    // Create ZMQ Context
+    zmq::context_t context;
+    // Create the Publish socket
+    zmq::socket_t publisher;
+    // Create the Snapshot socket
+    zmq::socket_t snapshot;
+    // Create the Collector socket
+    zmq::socket_t collector;
+
+    //panelclone::StateUpdate latest_frame;
 
     std::map<std::string, Dref> drefs_map;
 
     std::vector<PubValue> published_values;
 
+    std::atomic<unsigned int> latest_frame;
+
     //std::vector<size_t> unannounced_indexes;
 
     std::thread t;
     std::atomic<bool> keep_running;
+
+    std::atomic<bool> have_unread_drefs;
+    std::vector<std::string> peers_requesting_snapshots;
 
 public:
 
@@ -130,9 +152,13 @@ public:
     void Start();
     void Finish();
 
-    void PublishWorker();
-
     void GetFrame();
+
+private:
+
+    void PublishWorker();
+    void PublishLatestFrame();
+    void AnswerSnapshotRequests();
 };
 
 #endif /* DatarefPublisher_hpp */

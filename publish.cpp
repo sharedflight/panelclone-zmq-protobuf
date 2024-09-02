@@ -52,13 +52,22 @@ int main( int argc, char *argv[] )
         
         try {
             
+            panelclone::StateUpdate stateUpdate;
+
+            stateUpdate.set_frame(i++);
+
+            std::string data;
+            stateUpdate.SerializeToString(&data);
+
             // Create zmq message
-            zmq::message_t request( msg.length() );
+            //zmq::message_t request( data.length() );
             // Copy contents to zmq message
-            memcpy( request.data(), msg.c_str(), msg.length() );
+            //memcpy( request.data(), data.c_str(), data.length() );
+            
             // Publish the message
-            publisher.send( request );
-            //std::cout << "sending: " << i++ << std::endl;
+            publisher.send(zmq::buffer(data), zmq::send_flags::dontwait);
+
+            std::cout << "publishing frame " << i-1 << std::endl;
 
             zmq::message_t message;
             zmq::poll (&items [0], 2, 0);

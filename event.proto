@@ -2,15 +2,28 @@ syntax = "proto3";
 
 package panelclone;
 
+message PushState {
+  oneof pushEvent {
+    DrefValue drefWrite = 1;
+    
+  }
+}
+
 message StateUpdate {
   uint32 frame = 1;
   
   // This only contains indexes for NEW drefs
   // not present in previous state updates...
-  map<string, uint32> drefIndexes = 2;
+  repeated PubValIndex publishedValueIndexes = 2;
 
   // Changes in state...
   repeated DrefValue drefChanges = 3;
+}
+
+message PubValIndex {
+  int32 index = 1;
+  string dataref = 2;
+  int32 dref_index = 3;
 }
 
 /*
@@ -67,9 +80,10 @@ message DrefValue {
   uint32 index = 1;
   oneof value {
     int32 intVal = 2;
-    DrefIntArrayValue intArrayVal = 3;
-    DrefFloatArrayValue floatArrayVal = 4;
-    double doubleVal = 5;
-    DrefByteValue byteVal = 6;
+    float floatVal = 3;
+    //DrefIntArrayValue intArrayVal = 4;
+    //DrefFloatArrayValue floatArrayVal = 5;
+    double doubleVal = 6;
+    DrefByteValue byteVal = 7;
   } 
 }

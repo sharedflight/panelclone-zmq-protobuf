@@ -39,6 +39,23 @@ DatarefPublisher::~DatarefPublisher()
 void DatarefPublisher::Init()
 {
     keep_running.store(true);
+    latest_frame.store(0);
+
+    // Create ZMQ Context
+    context = zmq::context_t( 1 );
+    // Create the Publish socket
+    publisher = zmq::socket_t( context, ZMQ_PUB );
+    // Create the Snapshot socket
+    snapshot = zmq::socket_t( context, ZMQ_ROUTER);
+    // Create the Collector socket
+    collector = zmq::socket_t( context, ZMQ_PULL);
+
+    // Bind to a tcp sockets
+    snapshot.bind("tcp://*:5556");
+    publisher.bind("tcp://*:5557");
+    collector.bind("tcp://*:5558");
+
+    have_unread_drefs.store(false);
 }
 
 void DatarefPublisher::Start()
@@ -68,8 +85,148 @@ void DatarefPublisher::GetFrame()
         pubVal.flightLoopRead();
     }
 
+    latest_frame.store(latest_frame.load() + 1);
+
+    have_unread_drefs.store(false);
+
     lock.unlock();
     //panelclone::StateUpdate
+}
+
+void DatarefPublisher::PublishLatestFrame()
+{
+    lock.lock();
+
+    bool somethingToSend = false;
+
+    panelclone::StateUpdate stateUpdate;
+
+    stateUpdate.set_frame(latest_frame.load());
+
+    unsigned int published_values_index = 0;
+    for (auto & pubVal : published_values) {
+        if ( pubVal.shouldSend() ) {
+
+            somethingToSend = true;
+
+            auto drefvalue =  stateUpdate.add_drefchanges();
+
+            drefvalue->set_index(published_values_index);
+
+            if (pubVal.chosenType == INTVAL) {
+                drefvalue->set_intval(std::get<int>(pubVal.value));
+            } else if (pubVal.chosenType == FLOATVAL) {
+                drefvalue->set_floatval(std::get<float>(pubVal.value));
+            } else if (pubVal.chosenType == DOUBLEVAL) {
+                drefvalue->set_doubleval(std::get<double>(pubVal.value));
+            } else if (pubVal.chosenType == STRINGVAL) {
+
+            } else {
+                logMsg("[ERROR] Not setting a value, unhandled chosen type!");
+            }
+
+            if (!pubVal.published) {
+                auto pubvalindex = stateUpdate.add_publishedvalueindexes();
+
+                pubvalindex->set_index(published_values_index);
+                pubvalindex->set_dataref(pubVal.dref->name());
+                pubvalindex->set_dref_index(pubVal.index);
+
+                pubVal.published = true;
+            }
+
+            pubVal.sent();
+        }
+
+        published_values_index++;
+    }
+
+    if (somethingToSend) {
+        std::string data;
+        stateUpdate.SerializeToString(&data);
+
+        // Create zmq message
+        //zmq::message_t request( data.length() );
+        // Copy contents to zmq message
+        //memcpy( request.data(), data.c_str(), data.length() );
+        
+        // Publish the message
+        publisher.send(zmq::buffer(data), zmq::send_flags::dontwait);
+
+        logMsg("Sent a state update with %d changes", stateUpdate.drefchanges_size());
+    }
+
+    lock.unlock();
+}
+
+void DatarefPublisher::AnswerSnapshotRequests()
+{
+    lock.lock();
+
+    if (have_unread_drefs.load()) {
+        lock.unlock();
+        return;
+    }
+
+    // Prepare snapshot to send...
+
+    panelclone::Snapshot txSnapshot;
+
+    auto * frameSnapshot = txSnapshot.mutable_framesnapshot();
+
+    frameSnapshot->set_frame(latest_frame.load());
+
+    unsigned int published_values_index = 0;
+    for (auto & pubVal : published_values) {
+        
+        auto drefvalue =  frameSnapshot->add_drefchanges();
+
+        drefvalue->set_index(published_values_index);
+
+        if (pubVal.chosenType == INTVAL) {
+            drefvalue->set_intval(std::get<int>(pubVal.value));
+        } else if (pubVal.chosenType == FLOATVAL) {
+            drefvalue->set_floatval(std::get<float>(pubVal.value));
+        } else if (pubVal.chosenType == DOUBLEVAL) {
+            drefvalue->set_doubleval(std::get<double>(pubVal.value));
+        // } else if (pubVal.chosenType == INTARRAYVAL) {
+        //     auto intarrayval = drefvalue->mutable_intarrayval();
+        //     intarrayval->set_value(std::get<int>(pubVal.value));
+        //     intarrayval->set_index(pubVal.index);
+        // } else if (pubVal.chosenType == FLOATARRAYVAL) {
+        //     auto floatarrayval = drefvalue->mutable_floatarrayval();
+        //     floatarrayval->set_value(std::get<float>(pubVal.value));
+        //     floatarrayval->set_index(pubVal.index);
+        } else if (pubVal.chosenType == STRINGVAL) {
+
+        }
+
+        auto pubvalindex = frameSnapshot->add_publishedvalueindexes();
+
+        pubvalindex->set_index(published_values_index);
+        pubvalindex->set_dataref(pubVal.dref->name());
+        pubvalindex->set_dref_index(pubVal.index);
+
+        pubVal.published = true;
+
+        published_values_index++;
+    }
+
+    std::string data;
+    txSnapshot.SerializeToString(&data);
+
+    for (auto & requestor : peers_requesting_snapshots) {
+        // Publish the message
+        std::array<zmq::const_buffer, 2> bufs = {
+          zmq::buffer(requestor),
+          zmq::buffer(data)
+        };
+        zmq::send_multipart(snapshot, bufs);
+    }
+
+    peers_requesting_snapshots.clear();
+
+    lock.unlock();
 }
 
 void DatarefPublisher::PublishWorker()
@@ -77,19 +234,7 @@ void DatarefPublisher::PublishWorker()
     
     //StThreadCrashCookie crashCookie;
 
-    // Create ZMQ Context
-    zmq::context_t context ( 1 );
-    // Create the Publish socket
-    zmq::socket_t publisher ( context, ZMQ_PUB );
-    // Create the Snapshot socket
-    zmq::socket_t snapshot ( context, ZMQ_ROUTER);
-    // Create the Collector socket
-    zmq::socket_t collector ( context, ZMQ_PULL);
-
-    // Bind to a tcp sockets
-    snapshot.bind("tcp://*:5556");
-    publisher.bind("tcp://*:5557");
-    collector.bind("tcp://*:5558");
+    
 
 
     int i = 1;
@@ -100,18 +245,14 @@ void DatarefPublisher::PublishWorker()
     };
 
 
-    while (keep_running.load() == true) {
+    while (keep_running.load()) {
 
         try {
             
-            std::string msg = "blah";
+            PublishLatestFrame();
 
-            // Create zmq message
-            zmq::message_t request( msg.length() );
-            // Copy contents to zmq message
-            memcpy( request.data(), msg.c_str(), msg.length() );
-            // Publish the message
-            publisher.send( request );
+            AnswerSnapshotRequests();
+
             //std::cout << "sending: " << i++ << std::endl;
 
             zmq::message_t message;
@@ -133,19 +274,16 @@ void DatarefPublisher::PublishWorker()
                     return;
                 }
 
-                logMsg("size of msgs is %d", msgs.size());
-
                 std::string requestor = msgs[0].to_string();
 
                 auto & message = msgs[1];
-
-
-                logMsg("raw msg is: %s", message.str().c_str());
 
                 panelclone::StateRequest recvdStateRequest;
                 recvdStateRequest.ParseFromArray(message.data(), message.size());
 
                 logMsg("received snapshot message from %s, with %d daterefs", requestor.c_str(), recvdStateRequest.drefs_size());
+
+                peers_requesting_snapshots.push_back(requestor);
                 
                 auto numrefs = recvdStateRequest.drefs_size();
 
@@ -155,11 +293,28 @@ void DatarefPublisher::PublishWorker()
                     
                     auto dref_path = recvdStateRequest.drefs(i).dataref();
 
+                    auto recvd_index = recvdStateRequest.drefs(i).index();
+
                     auto it = drefs_map.find(dref_path);
 
                     if (it != drefs_map.end()) {
 
                         logMsg("[DEBUG] Found dref %s is being published", dref_path.c_str());
+
+                        bool already_have = false;
+
+                        // Check if we already have the same published value...
+                        for (auto & pubVal : published_values) {
+                            if (pubVal.dref->name() == dref_path && pubVal.index == recvd_index) {
+                                logMsg("[DEBUG] Already have this published value...");
+                                already_have = true;
+                                break;
+                            }
+                        }
+
+                        if (already_have) {
+                            continue;
+                        }
 
                     } else {
                         Dref new_dr;
@@ -176,7 +331,7 @@ void DatarefPublisher::PublishWorker()
                     PubValue pubVal;
 
                     pubVal.dref = &drefs_map[dref_path];
-                    pubVal.index = static_cast<size_t>(recvdStateRequest.drefs(i).index());
+                    pubVal.index = static_cast<size_t>(recvd_index);
                     pubVal.published = false;
 
                     {
@@ -191,52 +346,30 @@ void DatarefPublisher::PublishWorker()
                         } else if (type & xplmType_Double) {
                             pubVal.chosenType = DOUBLEVAL;
                         } else if (type & xplmType_IntArray) {
-                            pubVal.chosenType = INTARRAYVAL;
+                            pubVal.chosenType = INTVAL;
                         } else if (type & xplmType_FloatArray) {
-                            pubVal.chosenType = FLOATARRAYVAL;
+                            pubVal.chosenType = FLOATVAL;
                         } else if (type & xplmType_Data) {
                             pubVal.chosenType = STRINGVAL;
                         }
                     }
 
-                    pubVal.initValue();
+                    //We can not call this here not on the main thread...
+                    //pubVal.initValue();
 
                     published_values.push_back(std::move(pubVal));
+
+
 
                     logMsg("[DEBUG] Added published value %s[%d] to be published at index %d", dref_path.c_str(), published_values.back().index, published_values.size() - 1);
 
                     //unannounced_indexes.push_back(published_values.size() - 1);
 
+                    have_unread_drefs.store(true);
+
                 }
 
-                panelclone::Snapshot txSnapshot;
-
-                auto * frameSnapshot = txSnapshot.mutable_framesnapshot();
-
-                frameSnapshot->set_frame(i++);
-
-                auto drefChange = frameSnapshot->add_drefchanges();
-
-                drefChange->set_index(0);
-                drefChange->set_intval(10);
-
                 lock.unlock();
-    
-
-                //trodes::proto::Event event;
-                //event.set_name("myevent");
-                //event.set_origin("myorigin");
-
-                std::string data;
-                txSnapshot.SerializeToString(&data);
-
-                // Publish the message
-                std::array<zmq::const_buffer, 2> bufs = {
-                  zmq::buffer(requestor),
-                  zmq::buffer(data)
-                };
-                zmq::send_multipart(snapshot, bufs);
-
             }
 
         } catch (zmq::error_t &e) {
