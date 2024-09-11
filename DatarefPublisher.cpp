@@ -151,6 +151,7 @@ void DatarefPublisher::PublishLatestFrame()
         //memcpy( request.data(), data.c_str(), data.length() );
         
         // Publish the message
+        publisher.send(zmq::buffer("state"), zmq::send_flags::sndmore);
         publisher.send(zmq::buffer(data), zmq::send_flags::dontwait);
 
         logMsg("Sent a state update with %d changes", stateUpdate.drefchanges_size());

@@ -29,7 +29,7 @@
 
 #include "Dref.hpp"
 
-enum ValueType { INTVAL, FLOATVAL, DOUBLEVAL, STRINGVAL };
+enum ValueType { INTVAL, FLOATVAL, DOUBLEVAL, STRINGVAL, UNKNOWN };
 
 // We need to keep a "last sent" value in case we have multiple flight loops
 // per send ... 

@@ -159,6 +159,8 @@ XPluginDisable(void)
     XPLMUnregisterFlightLoopCallback(NetworkingFlightLoopCallback, NULL);    //  Don't forget to unload this callback.  
 }
 
+#define XPILOT_NEW_MESSAGE 0x8534701
+
 PLUGIN_API void XPluginReceiveMessage(
 XPLMPluginID    inFromWho,
 int             inMessage,
@@ -183,6 +185,11 @@ void *          inParam)
                 new_aircraft_loaded();
             }
 
+        case XPILOT_NEW_MESSAGE:
+            if (inParam) {
+                std::string message(static_cast<char*>(inParam));
+                logMsg("[ATC] Received new ATC message from xPilot:\n%s", message.c_str());
+            }
         default:
             break;
     }

@@ -70,7 +70,7 @@ int main( int argc, char *argv[] )
     // Create the Subscriber socket
     zmq::socket_t subscriber ( context, ZMQ_SUB);
 
-    subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
+    subscriber.setsockopt(ZMQ_SUBSCRIBE, "state", 0);
 
     //snapshot.set( zmq::sockopt::routing_id, "PEER2");
 
@@ -183,10 +183,12 @@ int main( int argc, char *argv[] )
                             switch (drefValue.value_case()) {
                                 case panelclone::DrefValue::ValueCase::kIntVal:
                                     pubvalinfo.value = drefValue.intval();
+                                    pubvalinfo.chosenType = INTVAL;
                                     std::cout << " new value for " << pubvalinfo.dataref << "[" << pubvalinfo.dref_index << "] is " << std::get<int>(pubvalinfo.value) << std::endl;
                                     break;
                                 case panelclone::DrefValue::ValueCase::kFloatVal:
                                     pubvalinfo.value = drefValue.floatval();
+                                    pubvalinfo.chosenType = FLOATVAL;
                                     std::cout << " new value for " << pubvalinfo.dataref << "[" << pubvalinfo.dref_index << "] is " << std::get<float>(pubvalinfo.value) << std::endl;
                                     break;
                                 // case panelclone::DrefValue::ValueCase::kIntArrayVal:
@@ -195,6 +197,7 @@ int main( int argc, char *argv[] )
                                 //     break;
                                 case panelclone::DrefValue::ValueCase::kDoubleVal:
                                     pubvalinfo.value = drefValue.doubleval();
+                                    pubvalinfo.chosenType = DOUBLEVAL;
                                     std::cout << " new value for " << pubvalinfo.dataref << "[" << pubvalinfo.dref_index << "] is " << std::get<double>(pubvalinfo.value) << std::endl;
                                     break;
                                 case panelclone::DrefValue::ValueCase::kByteVal:
