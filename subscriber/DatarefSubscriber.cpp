@@ -41,10 +41,8 @@ void DatarefSubscriber::Init()
     // Create the Subscriber socket
     subscriber = zmq::socket_t( context, ZMQ_SUB);
 
-    subscriber.setsockopt(ZMQ_SUBSCRIBE, "", 0);
-
-    //snapshot.set( zmq::sockopt::routing_id, "PEER2");
-
+    subscriber.set(zmq::sockopt::subscribe, "");
+    
     logMsg("connecting...");
 
     // Bind to a tcp sockets

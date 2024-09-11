@@ -14,8 +14,6 @@ typedef struct PubFloatValue_s
 
 int PubFloatValue_find(PubFloatValue *dr, const char *dr_name);
 
-int PubFloatValue_getvf32(const PubFloatValue *dr, float *ff, unsigned off, unsigned num);
-
 float PubFloatValue_getf(const PubFloatValue *dr);
 
 #ifdef __cplusplus
