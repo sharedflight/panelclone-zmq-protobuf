@@ -10,6 +10,7 @@
 
 #include "event.pb.h"
 
+#include "PubSubValueStructs.hpp"
 
     /*
 
@@ -29,16 +30,7 @@
 
     */
 
-enum ValueType { INTVAL, FLOATVAL, DOUBLEVAL, INTARRAYVAL, FLOATARRAYVAL, STRINGVAL, UNKNOWN };
 
-struct RecvdPubValue
-{
-    size_t index;
-    std::string dataref;
-    int dref_index;
-    std::variant<int, float, double, std::pair<std::string_view, size_t>> value;
-    ValueType chosenType;
-};
 
 std::map<size_t, RecvdPubValue> recvdPubValues;
 
