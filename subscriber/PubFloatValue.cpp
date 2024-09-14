@@ -12,5 +12,6 @@ int PubFloatValue_find(PubFloatValue *dr, const char *dr_name) {
 extern "C" 
 float PubFloatValue_getf(const PubFloatValue *dr) {
     assert(dr);
-    return DatarefSubscriber::getInstance().GetFloatValue(dr->index);
+    float val = DatarefSubscriber::getInstance().GetFloatValue(dr->index);
+    return val;
 }

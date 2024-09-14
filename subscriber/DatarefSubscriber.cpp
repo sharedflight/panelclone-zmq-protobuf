@@ -7,10 +7,6 @@
 
 #include "DatarefSubscriber.hpp"
 
-extern "C" {
-    #include <acfutils/log.h>
-}
-
 DatarefSubscriber& DatarefSubscriber::getInstance() {
     static DatarefSubscriber instance;   // Guaranteed to be destroyed.
                                          // Instantiated on first use.
@@ -43,14 +39,20 @@ void DatarefSubscriber::Init()
 
     subscriber.set(zmq::sockopt::subscribe, "");
     
-    logMsg("connecting...");
+    std::cout << "connecting..." << std::endl;
 
     // Bind to a tcp sockets
-    snapshot.connect("tcp://localhost:5556");
-    subscriber.connect("tcp://localhost:5557");
-    updater.connect("tcp://localhost:5558");
+    if (local) {
+        snapshot.connect("tcp://localhost:5559");
+        subscriber.connect("tcp://localhost:5560");
+        updater.connect("tcp://localhost:5561");
+    } else {
+        snapshot.connect("tcp://localhost:5556");
+        subscriber.connect("tcp://localhost:5557");
+        updater.connect("tcp://localhost:5558");
+    }
 
-    logMsg("connected...");
+    std::cout << "connected..." << std::endl;
 
 
     waiting_for_snapshot.store(false);
@@ -61,7 +63,7 @@ void DatarefSubscriber::Start()
 {
     Init();
     t = std::thread(&DatarefSubscriber::SubscriberWorker, this);
-    logMsg("subscriber worker started...");
+    std::cout << "subscriber worker started..." << std::endl;
 }
 
 bool DatarefSubscriber::Ready()
@@ -75,7 +77,7 @@ void DatarefSubscriber::Finish()
         return;
     }
 
-    logMsg("subscriber worker finishing...");
+    std::cout << "subscriber worker finishing..." << std::endl;
 
     lock.lock();
     keep_running.store(false);
@@ -83,93 +85,62 @@ void DatarefSubscriber::Finish()
     
     t.join();
     
-    logMsg("subscriber worker finished...");
+    std::cout << "subscriber worker finished..." << std::endl;
 }
 
-void DatarefSubscriber::GetFrame()
+bool DatarefSubscriber::GetLatestFrame(unsigned int cur_frame, panelclone::StateUpdate & stateUpdate)
 {
-    /*
     lock.lock();
-    
-    for (auto & pubVal : published_values) {
-        pubVal.flightLoopRead();
+
+    if (!Ready() || latest_stateUpdate.frame() <= cur_frame) {
+        lock.unlock();
+        return false;
     }
 
-    latest_frame.store(latest_frame.load() + 1);
-
-    have_unread_drefs.store(false);
+    stateUpdate = latest_stateUpdate;
 
     lock.unlock();
-    */
-    //panelclone::StateUpdate
+    return true;
 }
 
-void DatarefSubscriber::LatestFrame()
+bool DatarefSubscriber::GetLocalSnapshot(panelclone::Snapshot & txSnapshot)
 {
-    /*
     lock.lock();
 
-    bool somethingToSend = false;
+    if (!Ready()) {
+        lock.unlock();
+        return false;
+    }
 
-    panelclone::StateUpdate stateUpdate;
+    auto * frameSnapshot = txSnapshot.mutable_framesnapshot();
 
-    stateUpdate.set_frame(latest_frame.load());
+    frameSnapshot->set_frame(latest_stateUpdate.frame());
 
-    unsigned int published_values_index = 0;
-    for (auto & pubVal : published_values) {
-        if ( pubVal.shouldSend() ) {
+    for (const auto & [index, pubVal] : recvdPubValues) {
+        
+        auto drefvalue =  frameSnapshot->add_drefchanges();
 
-            somethingToSend = true;
+        drefvalue->set_index(index);
 
-            auto drefvalue =  stateUpdate.add_drefchanges();
+        if (pubVal.chosenType == panelclone::DrefValue::ValueCase::kIntVal) {
+            drefvalue->set_intval(std::get<int>(pubVal.value));
+        } else if (pubVal.chosenType == panelclone::DrefValue::ValueCase::kFloatVal) {
+            drefvalue->set_floatval(std::get<float>(pubVal.value));
+        } else if (pubVal.chosenType == panelclone::DrefValue::ValueCase::kDoubleVal) {
+            drefvalue->set_doubleval(std::get<double>(pubVal.value));
+        } else if (pubVal.chosenType == panelclone::DrefValue::ValueCase::kByteVal) {
 
-            drefvalue->set_index(published_values_index);
-
-            if (pubVal.chosenType == INTVAL) {
-                drefvalue->set_intval(std::get<int>(pubVal.value));
-            } else if (pubVal.chosenType == FLOATVAL) {
-                drefvalue->set_floatval(std::get<float>(pubVal.value));
-            } else if (pubVal.chosenType == DOUBLEVAL) {
-                drefvalue->set_doubleval(std::get<double>(pubVal.value));
-            } else if (pubVal.chosenType == STRINGVAL) {
-
-            } else {
-                logMsg("[ERROR] Not setting a value, unhandled chosen type!");
-            }
-
-            if (!pubVal.published) {
-                auto pubvalindex = stateUpdate.add_publishedvalueindexes();
-
-                pubvalindex->set_index(published_values_index);
-                pubvalindex->set_dataref(pubVal.dref->name());
-                pubvalindex->set_dref_index(pubVal.index);
-
-                pubVal.published = true;
-            }
-
-            pubVal.sent();
         }
 
-        published_values_index++;
-    }
+        auto pubvalindex = frameSnapshot->add_publishedvalueindexes();
 
-    if (somethingToSend) {
-        std::string data;
-        stateUpdate.SerializeToString(&data);
-
-        // Create zmq message
-        //zmq::message_t request( data.length() );
-        // Copy contents to zmq message
-        //memcpy( request.data(), data.c_str(), data.length() );
-        
-        // Publish the message
-        publisher.send(zmq::buffer(data), zmq::send_flags::dontwait);
-
-        logMsg("Sent a state update with %d changes", stateUpdate.drefchanges_size());
+        pubvalindex->set_index(index);
+        pubvalindex->set_dataref(pubVal.dataref);
+        pubvalindex->set_dref_index(pubVal.dref_index);
     }
 
     lock.unlock();
-    */
+    return true;
 }
 
 static
@@ -186,7 +157,7 @@ std::pair<std::string, int> datarefAndIndex(const std::string & dr_name)
             }
             catch (std::invalid_argument const& ex)
             {
-                std::cout << "std::invalid_argument::what(): " << ex.what() << '\n';
+                std::cout << "std::invalid_argument::what(): " << ex.what() << std::endl;
             }
             if (index >= 0) {
                 return std::make_pair(dr_name.substr(0, lbracepos), index);
@@ -218,6 +189,20 @@ bool DatarefSubscriber::FindFloatValue(PubFloatValue *dr, const std::string & dr
 
     return false;
 }
+
+bool DatarefSubscriber::HavePubValue(std::string dataref, int dref_index)
+{
+    lock.lock();
+    for (auto & [index, recvdPubValue] : recvdPubValues) {
+        if (recvdPubValue.dataref == dataref && recvdPubValue.dref_index == dref_index) {
+            lock.unlock();
+            return true;
+        }
+    }
+    lock.unlock();
+    return false;
+}
+
 
 void DatarefSubscriber::RequestDatarefs(std::vector<std::string>& datarefList)
 {
@@ -252,14 +237,14 @@ void DatarefSubscriber::RequestDatarefs(std::vector<std::string>& datarefList)
         res = snapshot.send( request, zmq::send_flags::dontwait );    
         
         if (res.has_value() && res.value() > 0) {
-            logMsg("sending snapshot request with %d drefs", stateRequest.drefs_size());
+            std::cout << "sending snapshot request with " << stateRequest.drefs_size() << " drefs" << std::endl;
             waiting_for_snapshot.store(true);
         } else {
-            logMsg("[error] failed to send snapshot request...");
+            std::cout << "[error] failed to send snapshot request..." << std::endl;
         }
 
     } catch (zmq::error_t &e) {
-        logMsg("[error] zmq error on snapshot send...");
+        std::cout << "[error] zmq error on snapshot send..." << std::endl;
     }
 
     lock.unlock();
@@ -304,6 +289,7 @@ void DatarefSubscriber::SubscriberWorker()
                         continue;
                     }
 
+                    
                     panelclone::StateUpdate stateUpdate;
 
                     stateUpdate.ParseFromArray(message.data(), message.size());
@@ -314,12 +300,12 @@ void DatarefSubscriber::SubscriberWorker()
 
                     if (latest_frame.load() < stateUpdate.frame()) {
 
+                        latest_stateUpdate = stateUpdate;
+
                         auto num_changed = stateUpdate.drefchanges_size();
                         
                         latest_frame.store(stateUpdate.frame());
 
-                        logMsg("received state update with %d changed drefs for frame %d", num_changed, latest_frame.load());
-                    
                         auto num_new_pubvals = stateUpdate.publishedvalueindexes_size();
 
                         for (auto i = 0; i < num_new_pubvals; i++) {
@@ -356,7 +342,7 @@ void DatarefSubscriber::SubscriberWorker()
                                 case panelclone::DrefValue::ValueCase::kByteVal:
                                     break;
                                 default:
-                                    logMsg("ERROR encountered unhandled value case!");
+                                    std::cout << "ERROR encountered unhandled value case!" << std::endl;
                                     break;
                             }
                         }
@@ -481,9 +467,8 @@ void DatarefSubscriber::SubscriberWorker()
                         }
                     }
 
-                    waiting_for_snapshot = false;
+                    waiting_for_snapshot.store(false);
 
-                    //////////////////
                 }
 
                 received_snapshot.store(true);
@@ -503,7 +488,7 @@ void DatarefSubscriber::SubscriberWorker()
     return;
 
 errout:
-    logMsg("[error] subscriber worker errored out...");
+    std::cout << "[error] subscriber worker errored out..." << std::endl;
     keep_running.store(false);
 }
 

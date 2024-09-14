@@ -29,6 +29,8 @@ class DatarefSubscriber
 {
     std::mutex lock;
     
+    bool local = false;
+
     // Create ZMQ Context
     zmq::context_t context;
     // Create the Updater socket
@@ -49,6 +51,8 @@ class DatarefSubscriber
 
     std::atomic<bool> received_snapshot;
 
+    panelclone::StateUpdate latest_stateUpdate;
+
 public:
 
     static DatarefSubscriber& getInstance();
@@ -60,21 +64,25 @@ public:
     void Start();
     void Finish();
 
+    void SetLocal(bool islocal) { local = islocal;};
+
     bool Ready();
 
-    void GetFrame();
+    bool GetLatestFrame(unsigned int cur_frame, panelclone::StateUpdate & stateUpdate);
+
+    bool GetLocalSnapshot(panelclone::Snapshot & txSnapshot);
 
     void RequestDatarefs(std::vector<std::string>& datarefList);
 
     bool FindFloatValue(PubFloatValue *dr, const std::string & dr_name);
+
+    bool HavePubValue(std::string dataref, int dref_index);
 
     float GetFloatValue(const int index);
 
 private:
 
     void SubscriberWorker();
-    void LatestFrame();
-    //void AnswerSnapshotRequests();
 
 };
 
