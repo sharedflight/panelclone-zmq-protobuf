@@ -12,6 +12,7 @@ struct PubValue
     int dref_index;
     std::variant<int, float, double, std::pair<std::string_view, size_t>> value;
     panelclone::DrefValue::ValueCase chosenType;
+    int last_frame_updated;
 
     float floatValue() {
         switch (chosenType) {

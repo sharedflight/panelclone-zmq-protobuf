@@ -298,36 +298,59 @@ void DatarefSubscriber::SubscriberWorker()
 
                     lock.lock();
 
+                    latest_stateUpdate = stateUpdate;
+
+                    auto num_changed = stateUpdate.drefchanges_size();
+                    
                     if (latest_frame.load() < stateUpdate.frame()) {
-
-                        latest_stateUpdate = stateUpdate;
-
-                        auto num_changed = stateUpdate.drefchanges_size();
-                        
                         latest_frame.store(stateUpdate.frame());
+                    }
 
-                        auto num_new_pubvals = stateUpdate.publishedvalueindexes_size();
+                    auto num_new_pubvals = stateUpdate.publishedvalueindexes_size();
 
-                        for (auto i = 0; i < num_new_pubvals; i++) {
-                            auto & pubvalindex = stateUpdate.publishedvalueindexes(i);
+                    for (auto i = 0; i < num_new_pubvals; i++) {
+                        auto & pubvalindex = stateUpdate.publishedvalueindexes(i);
 
+                        PubValue newPubValue;
+
+                        // Check if have already received a value update from
+                        // a future frame...
+                        if (auto search = recvdPubValues.find(pubvalindex.index()); search != recvdPubValues.end()) {
+                            std::cout << "WARNING: received definition after future value, for dataref " << pubvalindex.dataref() << std::endl;
+                            newPubValue = search->second;
+                        } else {
+                            newPubValue.last_frame_updated = stateUpdate.frame();
+                        }
+
+                        newPubValue.index = pubvalindex.index();
+                        newPubValue.dataref = pubvalindex.dataref();
+                        newPubValue.dref_index = pubvalindex.dref_index();
+                        newPubValue.chosenType = panelclone::DrefValue::ValueCase::VALUE_NOT_SET;
+
+                        recvdPubValues[newPubValue.index] = newPubValue;
+                    }
+
+                    
+                    for (auto i = 0 ; i < num_changed; i++) {
+                        auto & drefValue = stateUpdate.drefchanges(i);
+
+                        // Check if have already future frame value
+                        // without having received initial definition...
+                        if (auto search = recvdPubValues.find(drefValue.index()); search == recvdPubValues.end()) {
+                            std::cout << "WARNING: received value before definition" << std::endl;
                             PubValue newPubValue;
-
-                            newPubValue.index = pubvalindex.index();
-                            newPubValue.dataref = pubvalindex.dataref();
-                            newPubValue.dref_index = pubvalindex.dref_index();
-                            newPubValue.chosenType = panelclone::DrefValue::ValueCase::VALUE_NOT_SET;
-
+                            newPubValue.index = drefValue.index();
+                            newPubValue.dataref = "";
+                            newPubValue.dref_index = 9999999;
+                            newPubValue.chosenType = drefValue.value_case();
                             recvdPubValues[newPubValue.index] = newPubValue;
                         }
 
-                        
-                        for (auto i = 0 ; i < num_changed; i++) {
-                            auto & drefValue = stateUpdate.drefchanges(i);
+                        auto & pubvalinfo =  recvdPubValues[drefValue.index()];
+                                
+                        assert(pubvalinfo.chosenType == drefValue.value_case());
 
-                            auto & pubvalinfo =  recvdPubValues[drefValue.index()];
-                                    
-                            assert(pubvalinfo.chosenType == drefValue.value_case());
+                        if (pubvalinfo.last_frame_updated < stateUpdate.frame()) {
 
                             switch (drefValue.value_case()) {
                                 case panelclone::DrefValue::ValueCase::kIntVal:
@@ -345,12 +368,12 @@ void DatarefSubscriber::SubscriberWorker()
                                     std::cout << "ERROR encountered unhandled value case!" << std::endl;
                                     break;
                             }
-                        }
 
-                    } else {
-                       std::cout << "ignoring state update for frame " << stateUpdate.frame() << " older than current latest frame " << latest_frame << std::endl;
+                            pubvalinfo.last_frame_updated = stateUpdate.frame();
+                        }
                     }
 
+                    
                     lock.unlock();
                 }
             }
