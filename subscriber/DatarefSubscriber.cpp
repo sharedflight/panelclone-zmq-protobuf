@@ -41,15 +41,23 @@ void DatarefSubscriber::Init()
     
     std::cout << "connecting..." << std::endl;
 
+    std::string socketaddress;
+
     // Bind to a tcp sockets
     if (local) {
-        snapshot.connect("tcp://localhost:5559");
-        subscriber.connect("tcp://localhost:5560");
-        updater.connect("tcp://localhost:5561");
+        socketaddress = "tcp://" + _ipv4address + ":5559";
+        snapshot.connect(socketaddress.c_str());
+        socketaddress = "tcp://" + _ipv4address + ":5560";
+        subscriber.connect(socketaddress.c_str());
+        socketaddress = "tcp://" + _ipv4address + ":5561";
+        updater.connect(socketaddress.c_str());
     } else {
-        snapshot.connect("tcp://localhost:5556");
-        subscriber.connect("tcp://localhost:5557");
-        updater.connect("tcp://localhost:5558");
+        socketaddress = "tcp://" + _ipv4address + ":5556";
+        snapshot.connect(socketaddress.c_str());
+        socketaddress = "tcp://" + _ipv4address + ":5557";
+        subscriber.connect(socketaddress.c_str());
+        socketaddress = "tcp://" + _ipv4address + ":5558";
+        updater.connect(socketaddress.c_str());
     }
 
     std::cout << "connected..." << std::endl;
@@ -59,8 +67,10 @@ void DatarefSubscriber::Init()
     received_snapshot.store(false);
 }
 
-void DatarefSubscriber::Start()
+void DatarefSubscriber::Start(std::string ipv4address)
 {
+    _ipv4address = ipv4address;
+
     Init();
     t = std::thread(&DatarefSubscriber::SubscriberWorker, this);
     std::cout << "subscriber worker started..." << std::endl;

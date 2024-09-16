@@ -2,6 +2,7 @@
 #define _PUBVALUE_HPP_
 
 #include <string>
+#include <variant>
 
 #include <event.pb.h>
 

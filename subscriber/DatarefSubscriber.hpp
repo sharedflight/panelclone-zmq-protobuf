@@ -8,6 +8,8 @@
 #ifndef DatarefSubscriber_hpp
 #define DatarefSubscriber_hpp
 
+#include <string>
+
 #if IBM
 #include <mingw.thread.h>
 #include <mingw.mutex.h>  
@@ -53,6 +55,8 @@ class DatarefSubscriber
 
     panelclone::StateUpdate latest_stateUpdate;
 
+    std::string _ipv4address;
+
 public:
 
     static DatarefSubscriber& getInstance();
@@ -61,7 +65,7 @@ public:
     ~DatarefSubscriber();
     
     void Init();
-    void Start();
+    void Start(std::string ipv4address);
     void Finish();
 
     void SetLocal(bool islocal) { local = islocal;};
