@@ -213,6 +213,36 @@ bool DatarefSubscriber::HavePubValue(std::string dataref, int dref_index)
     return false;
 }
 
+bool DatarefSubscriber::SetFloatOverrideFunc(const std::string & dr_name, float_value_overide_t override_func)
+{
+    auto [dataref, dref_index] = datarefAndIndex(dr_name);
+
+    lock.lock();
+    for (auto & [index, recvdPubValue] : recvdPubValues) {
+        if (recvdPubValue.dataref == dataref && recvdPubValue.dref_index == dref_index) {
+            recvdPubValue.float_override_func = override_func;
+            lock.unlock();
+            return true;
+        }
+    }
+    lock.unlock();
+    return false;
+}
+
+bool DatarefSubscriber::SetFloatOverrideFuncRegex(const std::regex txt_regex, float_value_overide_t override_func)
+{
+    lock.lock();
+    bool foundmatches = false; 
+    for (auto & [index, recvdPubValue] : recvdPubValues) {
+        if (std::regex_match(recvdPubValue.dataref, txt_regex)) {
+            //std::cout << recvdPubValue.dataref << " matched" << std::endl;
+            recvdPubValue.float_override_func = override_func;
+            foundmatches = true;
+        }
+    }
+    lock.unlock();
+    return foundmatches;
+}
 
 void DatarefSubscriber::RequestDatarefs(std::vector<std::string>& datarefList)
 {
@@ -529,6 +559,14 @@ float DatarefSubscriber::GetFloatValue(const int index)
 { 
     lock.unlock();
     float val = recvdPubValues[index].floatValue(); 
+    lock.unlock();
+    return val;
+}
+
+float DatarefSubscriber::GetFloatValueBeforeOverride(const int index) 
+{ 
+    lock.unlock();
+    float val = recvdPubValues[index].floatValueUncorrected(); 
     lock.unlock();
     return val;
 }

@@ -9,6 +9,7 @@
 #define DatarefSubscriber_hpp
 
 #include <string>
+#include <regex>
 
 #if IBM
 #include <mingw.thread.h>
@@ -83,6 +84,10 @@ public:
     bool HavePubValue(std::string dataref, int dref_index);
 
     float GetFloatValue(const int index);
+    float GetFloatValueBeforeOverride(const int index);
+
+    bool SetFloatOverrideFunc(const std::string & dr_name, float_value_overide_t override_func);
+    bool SetFloatOverrideFuncRegex(const std::regex txt_regex, float_value_overide_t override_func);
 
 private:
 
