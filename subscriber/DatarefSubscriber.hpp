@@ -11,13 +11,8 @@
 #include <string>
 #include <regex>
 
-#if IBM
-#include <mingw.thread.h>
-#include <mingw.mutex.h>  
-#else
 #include <thread>
-#include <mutex>  
-#endif
+#include <mutex>
 
 #include <zmq.hpp>
 #include <zmq_addon.hpp>
