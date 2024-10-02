@@ -1,0 +1,4 @@
+#!/bin/bash
+echo 'Running Script'   
+./protoc-28.2-osx-universal_binary/bin/protoc event.proto --cpp_out=./
+echo 'Done'

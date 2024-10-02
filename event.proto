@@ -18,6 +18,15 @@ message StateUpdate {
 
   // Changes in state...
   repeated DrefValue drefChanges = 3;
+
+  optional x264FrameData panelFrameData = 4;
+}
+
+message x264FrameData {
+    int32 cols = 1;
+    int32 rows = 2;
+    int32 channels = 3;
+    bytes image_bytes = 4;
 }
 
 message PubValIndex {

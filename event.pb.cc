@@ -25,6 +25,36 @@ namespace _pbi = ::google::protobuf::internal;
 namespace _fl = ::google::protobuf::internal::field_layout;
 namespace panelclone {
 
+inline constexpr x264FrameData::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : image_bytes_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        cols_{0},
+        rows_{0},
+        channels_{0},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR x264FrameData::x264FrameData(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct x264FrameDataDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR x264FrameDataDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~x264FrameDataDefaultTypeInternal() {}
+  union {
+    x264FrameData _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 x264FrameDataDefaultTypeInternal _x264FrameData_default_instance_;
+
 inline constexpr RegisterDref::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : dataref_(
@@ -216,10 +246,11 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
 
 inline constexpr StateUpdate::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : publishedvalueindexes_{},
+      : _cached_size_{0},
+        publishedvalueindexes_{},
         drefchanges_{},
-        frame_{0u},
-        _cached_size_{0} {}
+        panelframedata_{nullptr},
+        frame_{0u} {}
 
 template <typename>
 PROTOBUF_CONSTEXPR StateUpdate::StateUpdate(::_pbi::ConstantInitialized)
@@ -309,7 +340,7 @@ const ::uint32_t
         ~0u,  // no sizeof(Split)
         ::_pbi::kInvalidFieldOffsetTag,
         PROTOBUF_FIELD_OFFSET(::panelclone::PushState, _impl_.pushEvent_),
-        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::panelclone::StateUpdate, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::panelclone::StateUpdate, _internal_metadata_),
         ~0u,  // no _extensions_
         ~0u,  // no _oneof_case_
@@ -320,6 +351,23 @@ const ::uint32_t
         PROTOBUF_FIELD_OFFSET(::panelclone::StateUpdate, _impl_.frame_),
         PROTOBUF_FIELD_OFFSET(::panelclone::StateUpdate, _impl_.publishedvalueindexes_),
         PROTOBUF_FIELD_OFFSET(::panelclone::StateUpdate, _impl_.drefchanges_),
+        PROTOBUF_FIELD_OFFSET(::panelclone::StateUpdate, _impl_.panelframedata_),
+        ~0u,
+        ~0u,
+        ~0u,
+        0,
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::panelclone::x264FrameData, _internal_metadata_),
+        ~0u,  // no _extensions_
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::panelclone::x264FrameData, _impl_.cols_),
+        PROTOBUF_FIELD_OFFSET(::panelclone::x264FrameData, _impl_.rows_),
+        PROTOBUF_FIELD_OFFSET(::panelclone::x264FrameData, _impl_.channels_),
+        PROTOBUF_FIELD_OFFSET(::panelclone::x264FrameData, _impl_.image_bytes_),
         ~0u,  // no _has_bits_
         PROTOBUF_FIELD_OFFSET(::panelclone::PubValIndex, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -409,19 +457,21 @@ const ::uint32_t
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
         {0, -1, -1, sizeof(::panelclone::PushState)},
-        {10, -1, -1, sizeof(::panelclone::StateUpdate)},
-        {21, -1, -1, sizeof(::panelclone::PubValIndex)},
-        {32, -1, -1, sizeof(::panelclone::StateRequest)},
-        {41, -1, -1, sizeof(::panelclone::RegisterDref)},
-        {51, 60, -1, sizeof(::panelclone::Snapshot)},
-        {61, -1, -1, sizeof(::panelclone::DrefIntArrayValue)},
-        {71, -1, -1, sizeof(::panelclone::DrefFloatArrayValue)},
-        {81, -1, -1, sizeof(::panelclone::DrefByteValue)},
-        {91, -1, -1, sizeof(::panelclone::DrefValue)},
+        {10, 22, -1, sizeof(::panelclone::StateUpdate)},
+        {26, -1, -1, sizeof(::panelclone::x264FrameData)},
+        {38, -1, -1, sizeof(::panelclone::PubValIndex)},
+        {49, -1, -1, sizeof(::panelclone::StateRequest)},
+        {58, -1, -1, sizeof(::panelclone::RegisterDref)},
+        {68, 77, -1, sizeof(::panelclone::Snapshot)},
+        {78, -1, -1, sizeof(::panelclone::DrefIntArrayValue)},
+        {88, -1, -1, sizeof(::panelclone::DrefFloatArrayValue)},
+        {98, -1, -1, sizeof(::panelclone::DrefByteValue)},
+        {108, -1, -1, sizeof(::panelclone::DrefValue)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
     &::panelclone::_PushState_default_instance_._instance,
     &::panelclone::_StateUpdate_default_instance_._instance,
+    &::panelclone::_x264FrameData_default_instance_._instance,
     &::panelclone::_PubValIndex_default_instance_._instance,
     &::panelclone::_StateRequest_default_instance_._instance,
     &::panelclone::_RegisterDref_default_instance_._instance,
@@ -435,35 +485,39 @@ const char descriptor_table_protodef_event_2eproto[] ABSL_ATTRIBUTE_SECTION_VARI
     protodesc_cold) = {
     "\n\013event.proto\022\npanelclone\"D\n\tPushState\022*"
     "\n\tdrefWrite\030\001 \001(\0132\025.panelclone.DrefValue"
-    "H\000B\013\n\tpushEvent\"\200\001\n\013StateUpdate\022\r\n\005frame"
+    "H\000B\013\n\tpushEvent\"\313\001\n\013StateUpdate\022\r\n\005frame"
     "\030\001 \001(\r\0226\n\025publishedValueIndexes\030\002 \003(\0132\027."
     "panelclone.PubValIndex\022*\n\013drefChanges\030\003 "
-    "\003(\0132\025.panelclone.DrefValue\"A\n\013PubValInde"
-    "x\022\r\n\005index\030\001 \001(\005\022\017\n\007dataref\030\002 \001(\t\022\022\n\ndre"
-    "f_index\030\003 \001(\005\"7\n\014StateRequest\022\'\n\005drefs\030\002"
-    " \003(\0132\030.panelclone.RegisterDref\".\n\014Regist"
-    "erDref\022\017\n\007dataref\030\001 \001(\t\022\r\n\005index\030\002 \001(\005\":"
-    "\n\010Snapshot\022.\n\rframeSnapshot\030\002 \001(\0132\027.pane"
-    "lclone.StateUpdate\"1\n\021DrefIntArrayValue\022"
-    "\r\n\005value\030\001 \001(\005\022\r\n\005index\030\002 \001(\r\"3\n\023DrefFlo"
-    "atArrayValue\022\r\n\005value\030\001 \001(\002\022\r\n\005index\030\002 \001"
-    "(\r\",\n\rDrefByteValue\022\r\n\005value\030\001 \001(\014\022\014\n\004si"
-    "ze\030\002 \001(\r\"\214\001\n\tDrefValue\022\r\n\005index\030\001 \001(\r\022\020\n"
-    "\006intVal\030\002 \001(\005H\000\022\022\n\010floatVal\030\003 \001(\002H\000\022\023\n\td"
-    "oubleVal\030\006 \001(\001H\000\022,\n\007byteVal\030\007 \001(\0132\031.pane"
-    "lclone.DrefByteValueH\000B\007\n\005valueb\006proto3"
+    "\003(\0132\025.panelclone.DrefValue\0226\n\016panelFrame"
+    "Data\030\004 \001(\0132\031.panelclone.x264FrameDataH\000\210"
+    "\001\001B\021\n\017_panelFrameData\"R\n\rx264FrameData\022\014"
+    "\n\004cols\030\001 \001(\005\022\014\n\004rows\030\002 \001(\005\022\020\n\010channels\030\003"
+    " \001(\005\022\023\n\013image_bytes\030\004 \001(\014\"A\n\013PubValIndex"
+    "\022\r\n\005index\030\001 \001(\005\022\017\n\007dataref\030\002 \001(\t\022\022\n\ndref"
+    "_index\030\003 \001(\005\"7\n\014StateRequest\022\'\n\005drefs\030\002 "
+    "\003(\0132\030.panelclone.RegisterDref\".\n\014Registe"
+    "rDref\022\017\n\007dataref\030\001 \001(\t\022\r\n\005index\030\002 \001(\005\":\n"
+    "\010Snapshot\022.\n\rframeSnapshot\030\002 \001(\0132\027.panel"
+    "clone.StateUpdate\"1\n\021DrefIntArrayValue\022\r"
+    "\n\005value\030\001 \001(\005\022\r\n\005index\030\002 \001(\r\"3\n\023DrefFloa"
+    "tArrayValue\022\r\n\005value\030\001 \001(\002\022\r\n\005index\030\002 \001("
+    "\r\",\n\rDrefByteValue\022\r\n\005value\030\001 \001(\014\022\014\n\004siz"
+    "e\030\002 \001(\r\"\214\001\n\tDrefValue\022\r\n\005index\030\001 \001(\r\022\020\n\006"
+    "intVal\030\002 \001(\005H\000\022\022\n\010floatVal\030\003 \001(\002H\000\022\023\n\tdo"
+    "ubleVal\030\006 \001(\001H\000\022,\n\007byteVal\030\007 \001(\0132\031.panel"
+    "clone.DrefByteValueH\000B\007\n\005valueb\006proto3"
 };
 static ::absl::once_flag descriptor_table_event_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_event_2eproto = {
     false,
     false,
-    759,
+    918,
     descriptor_table_protodef_event_2eproto,
     "event.proto",
     &descriptor_table_event_2eproto_once,
     nullptr,
     0,
-    10,
+    11,
     schemas,
     file_default_instances,
     TableStruct_event_2eproto::offsets,
@@ -763,6 +817,10 @@ void PushState::InternalSwap(PushState* PROTOBUF_RESTRICT other) {
 
 class StateUpdate::_Internal {
  public:
+  using HasBits =
+      decltype(std::declval<StateUpdate>()._impl_._has_bits_);
+  static constexpr ::int32_t kHasBitsOffset =
+      8 * PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_._has_bits_);
 };
 
 StateUpdate::StateUpdate(::google::protobuf::Arena* arena)
@@ -777,9 +835,10 @@ StateUpdate::StateUpdate(::google::protobuf::Arena* arena)
 inline PROTOBUF_NDEBUG_INLINE StateUpdate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
     const Impl_& from, const ::panelclone::StateUpdate& from_msg)
-      : publishedvalueindexes_{visibility, arena, from.publishedvalueindexes_},
-        drefchanges_{visibility, arena, from.drefchanges_},
-        _cached_size_{0} {}
+      : _has_bits_{from._has_bits_},
+        _cached_size_{0},
+        publishedvalueindexes_{visibility, arena, from.publishedvalueindexes_},
+        drefchanges_{visibility, arena, from.drefchanges_} {}
 
 StateUpdate::StateUpdate(
     ::google::protobuf::Arena* arena,
@@ -794,6 +853,10 @@ StateUpdate::StateUpdate(
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::uint32_t cached_has_bits = _impl_._has_bits_[0];
+  _impl_.panelframedata_ = (cached_has_bits & 0x00000001u) ? ::google::protobuf::Message::CopyConstruct<::panelclone::x264FrameData>(
+                              arena, *from._impl_.panelframedata_)
+                        : nullptr;
   _impl_.frame_ = from._impl_.frame_;
 
   // @@protoc_insertion_point(copy_constructor:panelclone.StateUpdate)
@@ -801,13 +864,18 @@ StateUpdate::StateUpdate(
 inline PROTOBUF_NDEBUG_INLINE StateUpdate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : publishedvalueindexes_{visibility, arena},
-        drefchanges_{visibility, arena},
-        _cached_size_{0} {}
+      : _cached_size_{0},
+        publishedvalueindexes_{visibility, arena},
+        drefchanges_{visibility, arena} {}
 
 inline void StateUpdate::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
-  _impl_.frame_ = {};
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, panelframedata_),
+           0,
+           offsetof(Impl_, frame_) -
+               offsetof(Impl_, panelframedata_) +
+               sizeof(Impl_::frame_));
 }
 StateUpdate::~StateUpdate() {
   // @@protoc_insertion_point(destructor:panelclone.StateUpdate)
@@ -816,6 +884,7 @@ StateUpdate::~StateUpdate() {
 }
 inline void StateUpdate::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
+  delete _impl_.panelframedata_;
   _impl_.~Impl_();
 }
 
@@ -848,16 +917,16 @@ const ::google::protobuf::MessageLite::ClassData* StateUpdate::GetClassData() co
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<2, 3, 2, 0, 2> StateUpdate::_table_ = {
+const ::_pbi::TcParseTable<2, 4, 3, 0, 2> StateUpdate::_table_ = {
   {
-    0,  // no _has_bits_
+    PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_._has_bits_),
     0, // no _extensions_
-    3, 24,  // max_field_number, fast_idx_mask
+    4, 24,  // max_field_number, fast_idx_mask
     offsetof(decltype(_table_), field_lookup_table),
-    4294967288,  // skipmap
+    4294967280,  // skipmap
     offsetof(decltype(_table_), field_entries),
-    3,  // num_field_entries
-    2,  // num_aux_entries
+    4,  // num_field_entries
+    3,  // num_aux_entries
     offsetof(decltype(_table_), aux_entries),
     _class_data_.base(),
     nullptr,  // post_loop_handler
@@ -866,7 +935,9 @@ const ::_pbi::TcParseTable<2, 3, 2, 0, 2> StateUpdate::_table_ = {
     ::_pbi::TcParser::GetTable<::panelclone::StateUpdate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // optional .panelclone.x264FrameData panelFrameData = 4;
+    {::_pbi::TcParser::FastMtS1,
+     {34, 0, 2, PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.panelframedata_)}},
     // uint32 frame = 1;
     {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(StateUpdate, _impl_.frame_), 63>(),
      {8, 63, 0, PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.frame_)}},
@@ -880,17 +951,21 @@ const ::_pbi::TcParseTable<2, 3, 2, 0, 2> StateUpdate::_table_ = {
     65535, 65535
   }}, {{
     // uint32 frame = 1;
-    {PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.frame_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.frame_), -1, 0,
     (0 | ::_fl::kFcSingular | ::_fl::kUInt32)},
     // repeated .panelclone.PubValIndex publishedValueIndexes = 2;
-    {PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.publishedvalueindexes_), 0, 0,
+    {PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.publishedvalueindexes_), -1, 0,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
     // repeated .panelclone.DrefValue drefChanges = 3;
-    {PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.drefchanges_), 0, 1,
+    {PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.drefchanges_), -1, 1,
     (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
+    // optional .panelclone.x264FrameData panelFrameData = 4;
+    {PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.panelframedata_), _Internal::kHasBitsOffset + 0, 2,
+    (0 | ::_fl::kFcOptional | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
     {::_pbi::TcParser::GetTable<::panelclone::PubValIndex>()},
     {::_pbi::TcParser::GetTable<::panelclone::DrefValue>()},
+    {::_pbi::TcParser::GetTable<::panelclone::x264FrameData>()},
   }}, {{
   }},
 };
@@ -904,7 +979,13 @@ PROTOBUF_NOINLINE void StateUpdate::Clear() {
 
   _impl_.publishedvalueindexes_.Clear();
   _impl_.drefchanges_.Clear();
+  cached_has_bits = _impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(_impl_.panelframedata_ != nullptr);
+    _impl_.panelframedata_->Clear();
+  }
   _impl_.frame_ = 0u;
+  _impl_._has_bits_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
@@ -952,6 +1033,14 @@ PROTOBUF_NOINLINE void StateUpdate::Clear() {
                     target, stream);
           }
 
+          cached_has_bits = this_._impl_._has_bits_[0];
+          // optional .panelclone.x264FrameData panelFrameData = 4;
+          if (cached_has_bits & 0x00000001u) {
+            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                4, *this_._impl_.panelframedata_, this_._impl_.panelframedata_->GetCachedSize(), target,
+                stream);
+          }
+
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
             target =
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
@@ -993,6 +1082,15 @@ PROTOBUF_NOINLINE void StateUpdate::Clear() {
             }
           }
            {
+            // optional .panelclone.x264FrameData panelFrameData = 4;
+            cached_has_bits =
+                this_._impl_._has_bits_[0];
+            if (cached_has_bits & 0x00000001u) {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.panelframedata_);
+            }
+          }
+           {
             // uint32 frame = 1;
             if (this_._internal_frame() != 0) {
               total_size += ::_pbi::WireFormatLite::UInt32SizePlusOne(
@@ -1006,6 +1104,7 @@ PROTOBUF_NOINLINE void StateUpdate::Clear() {
 void StateUpdate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
   auto* const _this = static_cast<StateUpdate*>(&to_msg);
   auto& from = static_cast<const StateUpdate&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
   // @@protoc_insertion_point(class_specific_merge_from_start:panelclone.StateUpdate)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
@@ -1015,9 +1114,20 @@ void StateUpdate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::goo
       from._internal_publishedvalueindexes());
   _this->_internal_mutable_drefchanges()->MergeFrom(
       from._internal_drefchanges());
+  cached_has_bits = from._impl_._has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    ABSL_DCHECK(from._impl_.panelframedata_ != nullptr);
+    if (_this->_impl_.panelframedata_ == nullptr) {
+      _this->_impl_.panelframedata_ =
+          ::google::protobuf::Message::CopyConstruct<::panelclone::x264FrameData>(arena, *from._impl_.panelframedata_);
+    } else {
+      _this->_impl_.panelframedata_->MergeFrom(*from._impl_.panelframedata_);
+    }
+  }
   if (from._internal_frame() != 0) {
     _this->_impl_.frame_ = from._impl_.frame_;
   }
+  _this->_impl_._has_bits_[0] |= cached_has_bits;
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -1032,12 +1142,322 @@ void StateUpdate::CopyFrom(const StateUpdate& from) {
 void StateUpdate::InternalSwap(StateUpdate* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  swap(_impl_._has_bits_[0], other->_impl_._has_bits_[0]);
   _impl_.publishedvalueindexes_.InternalSwap(&other->_impl_.publishedvalueindexes_);
   _impl_.drefchanges_.InternalSwap(&other->_impl_.drefchanges_);
-        swap(_impl_.frame_, other->_impl_.frame_);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.frame_)
+      + sizeof(StateUpdate::_impl_.frame_)
+      - PROTOBUF_FIELD_OFFSET(StateUpdate, _impl_.panelframedata_)>(
+          reinterpret_cast<char*>(&_impl_.panelframedata_),
+          reinterpret_cast<char*>(&other->_impl_.panelframedata_));
 }
 
 ::google::protobuf::Metadata StateUpdate::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class x264FrameData::_Internal {
+ public:
+};
+
+x264FrameData::x264FrameData(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:panelclone.x264FrameData)
+}
+inline PROTOBUF_NDEBUG_INLINE x264FrameData::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::panelclone::x264FrameData& from_msg)
+      : image_bytes_(arena, from.image_bytes_),
+        _cached_size_{0} {}
+
+x264FrameData::x264FrameData(
+    ::google::protobuf::Arena* arena,
+    const x264FrameData& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  x264FrameData* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  ::memcpy(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, cols_),
+           reinterpret_cast<const char *>(&from._impl_) +
+               offsetof(Impl_, cols_),
+           offsetof(Impl_, channels_) -
+               offsetof(Impl_, cols_) +
+               sizeof(Impl_::channels_));
+
+  // @@protoc_insertion_point(copy_constructor:panelclone.x264FrameData)
+}
+inline PROTOBUF_NDEBUG_INLINE x264FrameData::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : image_bytes_(arena),
+        _cached_size_{0} {}
+
+inline void x264FrameData::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  ::memset(reinterpret_cast<char *>(&_impl_) +
+               offsetof(Impl_, cols_),
+           0,
+           offsetof(Impl_, channels_) -
+               offsetof(Impl_, cols_) +
+               sizeof(Impl_::channels_));
+}
+x264FrameData::~x264FrameData() {
+  // @@protoc_insertion_point(destructor:panelclone.x264FrameData)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void x264FrameData::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.image_bytes_.Destroy();
+  _impl_.~Impl_();
+}
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    x264FrameData::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_x264FrameData_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &x264FrameData::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<x264FrameData>(),
+            ::google::protobuf::Message::GetNewImpl<x264FrameData>(),
+            ::google::protobuf::Message::GetClearImpl<x264FrameData>(), &x264FrameData::ByteSizeLong,
+                &x264FrameData::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_._cached_size_),
+            false,
+        },
+        &x264FrameData::kDescriptorMethods,
+        &descriptor_table_event_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* x264FrameData::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<2, 4, 0, 0, 2> x264FrameData::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    4, 24,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967280,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    4,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::panelclone::x264FrameData>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // bytes image_bytes = 4;
+    {::_pbi::TcParser::FastBS1,
+     {34, 63, 0, PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.image_bytes_)}},
+    // int32 cols = 1;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(x264FrameData, _impl_.cols_), 63>(),
+     {8, 63, 0, PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.cols_)}},
+    // int32 rows = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(x264FrameData, _impl_.rows_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.rows_)}},
+    // int32 channels = 3;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(x264FrameData, _impl_.channels_), 63>(),
+     {24, 63, 0, PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.channels_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // int32 cols = 1;
+    {PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.cols_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 rows = 2;
+    {PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.rows_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 channels = 3;
+    {PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.channels_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // bytes image_bytes = 4;
+    {PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.image_bytes_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kBytes | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+  }},
+};
+
+PROTOBUF_NOINLINE void x264FrameData::Clear() {
+// @@protoc_insertion_point(message_clear_start:panelclone.x264FrameData)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.image_bytes_.ClearToEmpty();
+  ::memset(&_impl_.cols_, 0, static_cast<::size_t>(
+      reinterpret_cast<char*>(&_impl_.channels_) -
+      reinterpret_cast<char*>(&_impl_.cols_)) + sizeof(_impl_.channels_));
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* x264FrameData::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const x264FrameData& this_ = static_cast<const x264FrameData&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* x264FrameData::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const x264FrameData& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:panelclone.x264FrameData)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // int32 cols = 1;
+          if (this_._internal_cols() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<1>(
+                    stream, this_._internal_cols(), target);
+          }
+
+          // int32 rows = 2;
+          if (this_._internal_rows() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_rows(), target);
+          }
+
+          // int32 channels = 3;
+          if (this_._internal_channels() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<3>(
+                    stream, this_._internal_channels(), target);
+          }
+
+          // bytes image_bytes = 4;
+          if (!this_._internal_image_bytes().empty()) {
+            const std::string& _s = this_._internal_image_bytes();
+            target = stream->WriteBytesMaybeAliased(4, _s, target);
+          }
+
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:panelclone.x264FrameData)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t x264FrameData::ByteSizeLong(const MessageLite& base) {
+          const x264FrameData& this_ = static_cast<const x264FrameData&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t x264FrameData::ByteSizeLong() const {
+          const x264FrameData& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:panelclone.x264FrameData)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // bytes image_bytes = 4;
+            if (!this_._internal_image_bytes().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::BytesSize(
+                                              this_._internal_image_bytes());
+            }
+            // int32 cols = 1;
+            if (this_._internal_cols() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_cols());
+            }
+            // int32 rows = 2;
+            if (this_._internal_rows() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_rows());
+            }
+            // int32 channels = 3;
+            if (this_._internal_channels() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_channels());
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void x264FrameData::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<x264FrameData*>(&to_msg);
+  auto& from = static_cast<const x264FrameData&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:panelclone.x264FrameData)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_image_bytes().empty()) {
+    _this->_internal_set_image_bytes(from._internal_image_bytes());
+  }
+  if (from._internal_cols() != 0) {
+    _this->_impl_.cols_ = from._impl_.cols_;
+  }
+  if (from._internal_rows() != 0) {
+    _this->_impl_.rows_ = from._impl_.rows_;
+  }
+  if (from._internal_channels() != 0) {
+    _this->_impl_.channels_ = from._impl_.channels_;
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void x264FrameData::CopyFrom(const x264FrameData& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:panelclone.x264FrameData)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void x264FrameData::InternalSwap(x264FrameData* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.image_bytes_, &other->_impl_.image_bytes_, arena);
+  ::google::protobuf::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.channels_)
+      + sizeof(x264FrameData::_impl_.channels_)
+      - PROTOBUF_FIELD_OFFSET(x264FrameData, _impl_.cols_)>(
+          reinterpret_cast<char*>(&_impl_.cols_),
+          reinterpret_cast<char*>(&other->_impl_.cols_));
+}
+
+::google::protobuf::Metadata x264FrameData::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================

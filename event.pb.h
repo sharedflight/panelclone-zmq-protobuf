@@ -80,6 +80,9 @@ extern StateRequestDefaultTypeInternal _StateRequest_default_instance_;
 class StateUpdate;
 struct StateUpdateDefaultTypeInternal;
 extern StateUpdateDefaultTypeInternal _StateUpdate_default_instance_;
+class x264FrameData;
+struct x264FrameDataDefaultTypeInternal;
+extern x264FrameDataDefaultTypeInternal _x264FrameData_default_instance_;
 }  // namespace panelclone
 namespace google {
 namespace protobuf {
@@ -91,6 +94,236 @@ namespace panelclone {
 // ===================================================================
 
 
+// -------------------------------------------------------------------
+
+class x264FrameData final : public ::google::protobuf::Message
+/* @@protoc_insertion_point(class_definition:panelclone.x264FrameData) */ {
+ public:
+  inline x264FrameData() : x264FrameData(nullptr) {}
+  ~x264FrameData() PROTOBUF_FINAL;
+  template <typename = void>
+  explicit PROTOBUF_CONSTEXPR x264FrameData(
+      ::google::protobuf::internal::ConstantInitialized);
+
+  inline x264FrameData(const x264FrameData& from) : x264FrameData(nullptr, from) {}
+  inline x264FrameData(x264FrameData&& from) noexcept
+      : x264FrameData(nullptr, std::move(from)) {}
+  inline x264FrameData& operator=(const x264FrameData& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline x264FrameData& operator=(x264FrameData&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetArena() == from.GetArena()
+#ifdef PROTOBUF_FORCE_COPY_IN_MOVE
+        && GetArena() != nullptr
+#endif  // !PROTOBUF_FORCE_COPY_IN_MOVE
+    ) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance);
+  }
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields()
+      ABSL_ATTRIBUTE_LIFETIME_BOUND {
+    return _internal_metadata_.mutable_unknown_fields<::google::protobuf::UnknownFieldSet>();
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::google::protobuf::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::google::protobuf::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const x264FrameData& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const x264FrameData* internal_default_instance() {
+    return reinterpret_cast<const x264FrameData*>(
+        &_x264FrameData_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages = 2;
+  friend void swap(x264FrameData& a, x264FrameData& b) { a.Swap(&b); }
+  inline void Swap(x264FrameData* other) {
+    if (other == this) return;
+#ifdef PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() != nullptr && GetArena() == other->GetArena()) {
+#else   // PROTOBUF_FORCE_COPY_IN_SWAP
+    if (GetArena() == other->GetArena()) {
+#endif  // !PROTOBUF_FORCE_COPY_IN_SWAP
+      InternalSwap(other);
+    } else {
+      ::google::protobuf::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(x264FrameData* other) {
+    if (other == this) return;
+    ABSL_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  x264FrameData* New(::google::protobuf::Arena* arena = nullptr) const PROTOBUF_FINAL {
+    return ::google::protobuf::Message::DefaultConstruct<x264FrameData>(arena);
+  }
+  using ::google::protobuf::Message::CopyFrom;
+  void CopyFrom(const x264FrameData& from);
+  using ::google::protobuf::Message::MergeFrom;
+  void MergeFrom(const x264FrameData& from) { x264FrameData::MergeImpl(*this, from); }
+
+  private:
+  static void MergeImpl(
+      ::google::protobuf::MessageLite& to_msg,
+      const ::google::protobuf::MessageLite& from_msg);
+
+  public:
+  bool IsInitialized() const {
+    return true;
+  }
+  ABSL_ATTRIBUTE_REINITIALIZES void Clear() PROTOBUF_FINAL;
+  #if defined(PROTOBUF_CUSTOM_VTABLE)
+  private:
+  static ::size_t ByteSizeLong(const ::google::protobuf::MessageLite& msg);
+  static ::uint8_t* _InternalSerialize(
+      const MessageLite& msg, ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream);
+
+  public:
+  ::size_t ByteSizeLong() const { return ByteSizeLong(*this); }
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+    return _InternalSerialize(*this, target, stream);
+  }
+  #else   // PROTOBUF_CUSTOM_VTABLE
+  ::size_t ByteSizeLong() const final;
+  ::uint8_t* _InternalSerialize(
+      ::uint8_t* target,
+      ::google::protobuf::io::EpsCopyOutputStream* stream) const final;
+  #endif  // PROTOBUF_CUSTOM_VTABLE
+  int GetCachedSize() const { return _impl_._cached_size_.Get(); }
+
+  private:
+  void SharedCtor(::google::protobuf::Arena* arena);
+  void SharedDtor();
+  void InternalSwap(x264FrameData* other);
+ private:
+  friend class ::google::protobuf::internal::AnyMetadata;
+  static ::absl::string_view FullMessageName() { return "panelclone.x264FrameData"; }
+
+ protected:
+  explicit x264FrameData(::google::protobuf::Arena* arena);
+  x264FrameData(::google::protobuf::Arena* arena, const x264FrameData& from);
+  x264FrameData(::google::protobuf::Arena* arena, x264FrameData&& from) noexcept
+      : x264FrameData(arena) {
+    *this = ::std::move(from);
+  }
+  const ::google::protobuf::Message::ClassData* GetClassData() const PROTOBUF_FINAL;
+  static const ::google::protobuf::Message::ClassDataFull _class_data_;
+
+ public:
+  ::google::protobuf::Metadata GetMetadata() const;
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+  enum : int {
+    kImageBytesFieldNumber = 4,
+    kColsFieldNumber = 1,
+    kRowsFieldNumber = 2,
+    kChannelsFieldNumber = 3,
+  };
+  // bytes image_bytes = 4;
+  void clear_image_bytes() ;
+  const std::string& image_bytes() const;
+  template <typename Arg_ = const std::string&, typename... Args_>
+  void set_image_bytes(Arg_&& arg, Args_... args);
+  std::string* mutable_image_bytes();
+  PROTOBUF_NODISCARD std::string* release_image_bytes();
+  void set_allocated_image_bytes(std::string* value);
+
+  private:
+  const std::string& _internal_image_bytes() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_image_bytes(
+      const std::string& value);
+  std::string* _internal_mutable_image_bytes();
+
+  public:
+  // int32 cols = 1;
+  void clear_cols() ;
+  ::int32_t cols() const;
+  void set_cols(::int32_t value);
+
+  private:
+  ::int32_t _internal_cols() const;
+  void _internal_set_cols(::int32_t value);
+
+  public:
+  // int32 rows = 2;
+  void clear_rows() ;
+  ::int32_t rows() const;
+  void set_rows(::int32_t value);
+
+  private:
+  ::int32_t _internal_rows() const;
+  void _internal_set_rows(::int32_t value);
+
+  public:
+  // int32 channels = 3;
+  void clear_channels() ;
+  ::int32_t channels() const;
+  void set_channels(::int32_t value);
+
+  private:
+  ::int32_t _internal_channels() const;
+  void _internal_set_channels(::int32_t value);
+
+  public:
+  // @@protoc_insertion_point(class_scope:panelclone.x264FrameData)
+ private:
+  class _Internal;
+  friend class ::google::protobuf::internal::TcParser;
+  static const ::google::protobuf::internal::TcParseTable<
+      2, 4, 0,
+      0, 2>
+      _table_;
+
+  static constexpr const void* _raw_default_instance_ =
+      &_x264FrameData_default_instance_;
+
+  friend class ::google::protobuf::MessageLite;
+  friend class ::google::protobuf::Arena;
+  template <typename T>
+  friend class ::google::protobuf::Arena::InternalHelper;
+  using InternalArenaConstructable_ = void;
+  using DestructorSkippable_ = void;
+  struct Impl_ {
+    inline explicit constexpr Impl_(
+        ::google::protobuf::internal::ConstantInitialized) noexcept;
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena);
+    inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
+                          ::google::protobuf::Arena* arena, const Impl_& from,
+                          const x264FrameData& from_msg);
+    ::google::protobuf::internal::ArenaStringPtr image_bytes_;
+    ::int32_t cols_;
+    ::int32_t rows_;
+    ::int32_t channels_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
+    PROTOBUF_TSAN_DECLARE_MEMBER
+  };
+  union { Impl_ _impl_; };
+  friend struct ::TableStruct_event_2eproto;
+};
 // -------------------------------------------------------------------
 
 class RegisterDref final : public ::google::protobuf::Message
@@ -148,7 +381,7 @@ class RegisterDref final : public ::google::protobuf::Message
     return reinterpret_cast<const RegisterDref*>(
         &_RegisterDref_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 4;
+  static constexpr int kIndexInFileMessages = 5;
   friend void swap(RegisterDref& a, RegisterDref& b) { a.Swap(&b); }
   inline void Swap(RegisterDref* other) {
     if (other == this) return;
@@ -354,7 +587,7 @@ class PubValIndex final : public ::google::protobuf::Message
     return reinterpret_cast<const PubValIndex*>(
         &_PubValIndex_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 2;
+  static constexpr int kIndexInFileMessages = 3;
   friend void swap(PubValIndex& a, PubValIndex& b) { a.Swap(&b); }
   inline void Swap(PubValIndex* other) {
     if (other == this) return;
@@ -572,7 +805,7 @@ class DrefIntArrayValue final : public ::google::protobuf::Message
     return reinterpret_cast<const DrefIntArrayValue*>(
         &_DrefIntArrayValue_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 6;
+  static constexpr int kIndexInFileMessages = 7;
   friend void swap(DrefIntArrayValue& a, DrefIntArrayValue& b) { a.Swap(&b); }
   inline void Swap(DrefIntArrayValue* other) {
     if (other == this) return;
@@ -772,7 +1005,7 @@ class DrefFloatArrayValue final : public ::google::protobuf::Message
     return reinterpret_cast<const DrefFloatArrayValue*>(
         &_DrefFloatArrayValue_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 7;
+  static constexpr int kIndexInFileMessages = 8;
   friend void swap(DrefFloatArrayValue& a, DrefFloatArrayValue& b) { a.Swap(&b); }
   inline void Swap(DrefFloatArrayValue* other) {
     if (other == this) return;
@@ -972,7 +1205,7 @@ class DrefByteValue final : public ::google::protobuf::Message
     return reinterpret_cast<const DrefByteValue*>(
         &_DrefByteValue_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 8;
+  static constexpr int kIndexInFileMessages = 9;
   friend void swap(DrefByteValue& a, DrefByteValue& b) { a.Swap(&b); }
   inline void Swap(DrefByteValue* other) {
     if (other == this) return;
@@ -1178,7 +1411,7 @@ class StateRequest final : public ::google::protobuf::Message
     return reinterpret_cast<const StateRequest*>(
         &_StateRequest_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 3;
+  static constexpr int kIndexInFileMessages = 4;
   friend void swap(StateRequest& a, StateRequest& b) { a.Swap(&b); }
   inline void Swap(StateRequest* other) {
     if (other == this) return;
@@ -1380,7 +1613,7 @@ class DrefValue final : public ::google::protobuf::Message
     return reinterpret_cast<const DrefValue*>(
         &_DrefValue_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 9;
+  static constexpr int kIndexInFileMessages = 10;
   friend void swap(DrefValue& a, DrefValue& b) { a.Swap(&b); }
   inline void Swap(DrefValue* other) {
     if (other == this) return;
@@ -1729,6 +1962,7 @@ class StateUpdate final : public ::google::protobuf::Message
   enum : int {
     kPublishedValueIndexesFieldNumber = 2,
     kDrefChangesFieldNumber = 3,
+    kPanelFrameDataFieldNumber = 4,
     kFrameFieldNumber = 1,
   };
   // repeated .panelclone.PubValIndex publishedValueIndexes = 2;
@@ -1765,6 +1999,21 @@ class StateUpdate final : public ::google::protobuf::Message
   const ::panelclone::DrefValue& drefchanges(int index) const;
   ::panelclone::DrefValue* add_drefchanges();
   const ::google::protobuf::RepeatedPtrField<::panelclone::DrefValue>& drefchanges() const;
+  // optional .panelclone.x264FrameData panelFrameData = 4;
+  bool has_panelframedata() const;
+  void clear_panelframedata() ;
+  const ::panelclone::x264FrameData& panelframedata() const;
+  PROTOBUF_NODISCARD ::panelclone::x264FrameData* release_panelframedata();
+  ::panelclone::x264FrameData* mutable_panelframedata();
+  void set_allocated_panelframedata(::panelclone::x264FrameData* value);
+  void unsafe_arena_set_allocated_panelframedata(::panelclone::x264FrameData* value);
+  ::panelclone::x264FrameData* unsafe_arena_release_panelframedata();
+
+  private:
+  const ::panelclone::x264FrameData& _internal_panelframedata() const;
+  ::panelclone::x264FrameData* _internal_mutable_panelframedata();
+
+  public:
   // uint32 frame = 1;
   void clear_frame() ;
   ::uint32_t frame() const;
@@ -1780,7 +2029,7 @@ class StateUpdate final : public ::google::protobuf::Message
   class _Internal;
   friend class ::google::protobuf::internal::TcParser;
   static const ::google::protobuf::internal::TcParseTable<
-      2, 3, 2,
+      2, 4, 3,
       0, 2>
       _table_;
 
@@ -1801,10 +2050,12 @@ class StateUpdate final : public ::google::protobuf::Message
     inline explicit Impl_(::google::protobuf::internal::InternalVisibility visibility,
                           ::google::protobuf::Arena* arena, const Impl_& from,
                           const StateUpdate& from_msg);
+    ::google::protobuf::internal::HasBits<1> _has_bits_;
+    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     ::google::protobuf::RepeatedPtrField< ::panelclone::PubValIndex > publishedvalueindexes_;
     ::google::protobuf::RepeatedPtrField< ::panelclone::DrefValue > drefchanges_;
+    ::panelclone::x264FrameData* panelframedata_;
     ::uint32_t frame_;
-    mutable ::google::protobuf::internal::CachedSize _cached_size_;
     PROTOBUF_TSAN_DECLARE_MEMBER
   };
   union { Impl_ _impl_; };
@@ -2078,7 +2329,7 @@ class Snapshot final : public ::google::protobuf::Message
     return reinterpret_cast<const Snapshot*>(
         &_Snapshot_default_instance_);
   }
-  static constexpr int kIndexInFileMessages = 5;
+  static constexpr int kIndexInFileMessages = 6;
   friend void swap(Snapshot& a, Snapshot& b) { a.Swap(&b); }
   inline void Swap(Snapshot* other) {
     if (other == this) return;
@@ -2442,6 +2693,222 @@ inline ::google::protobuf::RepeatedPtrField<::panelclone::DrefValue>*
 StateUpdate::_internal_mutable_drefchanges() {
   ::google::protobuf::internal::TSanRead(&_impl_);
   return &_impl_.drefchanges_;
+}
+
+// optional .panelclone.x264FrameData panelFrameData = 4;
+inline bool StateUpdate::has_panelframedata() const {
+  bool value = (_impl_._has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || _impl_.panelframedata_ != nullptr);
+  return value;
+}
+inline void StateUpdate::clear_panelframedata() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.panelframedata_ != nullptr) _impl_.panelframedata_->Clear();
+  _impl_._has_bits_[0] &= ~0x00000001u;
+}
+inline const ::panelclone::x264FrameData& StateUpdate::_internal_panelframedata() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  const ::panelclone::x264FrameData* p = _impl_.panelframedata_;
+  return p != nullptr ? *p : reinterpret_cast<const ::panelclone::x264FrameData&>(::panelclone::_x264FrameData_default_instance_);
+}
+inline const ::panelclone::x264FrameData& StateUpdate::panelframedata() const ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:panelclone.StateUpdate.panelFrameData)
+  return _internal_panelframedata();
+}
+inline void StateUpdate::unsafe_arena_set_allocated_panelframedata(::panelclone::x264FrameData* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::google::protobuf::MessageLite*>(_impl_.panelframedata_);
+  }
+  _impl_.panelframedata_ = reinterpret_cast<::panelclone::x264FrameData*>(value);
+  if (value != nullptr) {
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:panelclone.StateUpdate.panelFrameData)
+}
+inline ::panelclone::x264FrameData* StateUpdate::release_panelframedata() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::panelclone::x264FrameData* released = _impl_.panelframedata_;
+  _impl_.panelframedata_ = nullptr;
+#ifdef PROTOBUF_FORCE_COPY_IN_RELEASE
+  auto* old = reinterpret_cast<::google::protobuf::MessageLite*>(released);
+  released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  if (GetArena() == nullptr) {
+    delete old;
+  }
+#else   // PROTOBUF_FORCE_COPY_IN_RELEASE
+  if (GetArena() != nullptr) {
+    released = ::google::protobuf::internal::DuplicateIfNonNull(released);
+  }
+#endif  // !PROTOBUF_FORCE_COPY_IN_RELEASE
+  return released;
+}
+inline ::panelclone::x264FrameData* StateUpdate::unsafe_arena_release_panelframedata() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:panelclone.StateUpdate.panelFrameData)
+
+  _impl_._has_bits_[0] &= ~0x00000001u;
+  ::panelclone::x264FrameData* temp = _impl_.panelframedata_;
+  _impl_.panelframedata_ = nullptr;
+  return temp;
+}
+inline ::panelclone::x264FrameData* StateUpdate::_internal_mutable_panelframedata() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (_impl_.panelframedata_ == nullptr) {
+    auto* p = ::google::protobuf::Message::DefaultConstruct<::panelclone::x264FrameData>(GetArena());
+    _impl_.panelframedata_ = reinterpret_cast<::panelclone::x264FrameData*>(p);
+  }
+  return _impl_.panelframedata_;
+}
+inline ::panelclone::x264FrameData* StateUpdate::mutable_panelframedata() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  _impl_._has_bits_[0] |= 0x00000001u;
+  ::panelclone::x264FrameData* _msg = _internal_mutable_panelframedata();
+  // @@protoc_insertion_point(field_mutable:panelclone.StateUpdate.panelFrameData)
+  return _msg;
+}
+inline void StateUpdate::set_allocated_panelframedata(::panelclone::x264FrameData* value) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  if (message_arena == nullptr) {
+    delete (_impl_.panelframedata_);
+  }
+
+  if (value != nullptr) {
+    ::google::protobuf::Arena* submessage_arena = (value)->GetArena();
+    if (message_arena != submessage_arena) {
+      value = ::google::protobuf::internal::GetOwnedMessage(message_arena, value, submessage_arena);
+    }
+    _impl_._has_bits_[0] |= 0x00000001u;
+  } else {
+    _impl_._has_bits_[0] &= ~0x00000001u;
+  }
+
+  _impl_.panelframedata_ = reinterpret_cast<::panelclone::x264FrameData*>(value);
+  // @@protoc_insertion_point(field_set_allocated:panelclone.StateUpdate.panelFrameData)
+}
+
+// -------------------------------------------------------------------
+
+// x264FrameData
+
+// int32 cols = 1;
+inline void x264FrameData::clear_cols() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cols_ = 0;
+}
+inline ::int32_t x264FrameData::cols() const {
+  // @@protoc_insertion_point(field_get:panelclone.x264FrameData.cols)
+  return _internal_cols();
+}
+inline void x264FrameData::set_cols(::int32_t value) {
+  _internal_set_cols(value);
+  // @@protoc_insertion_point(field_set:panelclone.x264FrameData.cols)
+}
+inline ::int32_t x264FrameData::_internal_cols() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.cols_;
+}
+inline void x264FrameData::_internal_set_cols(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.cols_ = value;
+}
+
+// int32 rows = 2;
+inline void x264FrameData::clear_rows() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.rows_ = 0;
+}
+inline ::int32_t x264FrameData::rows() const {
+  // @@protoc_insertion_point(field_get:panelclone.x264FrameData.rows)
+  return _internal_rows();
+}
+inline void x264FrameData::set_rows(::int32_t value) {
+  _internal_set_rows(value);
+  // @@protoc_insertion_point(field_set:panelclone.x264FrameData.rows)
+}
+inline ::int32_t x264FrameData::_internal_rows() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.rows_;
+}
+inline void x264FrameData::_internal_set_rows(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.rows_ = value;
+}
+
+// int32 channels = 3;
+inline void x264FrameData::clear_channels() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.channels_ = 0;
+}
+inline ::int32_t x264FrameData::channels() const {
+  // @@protoc_insertion_point(field_get:panelclone.x264FrameData.channels)
+  return _internal_channels();
+}
+inline void x264FrameData::set_channels(::int32_t value) {
+  _internal_set_channels(value);
+  // @@protoc_insertion_point(field_set:panelclone.x264FrameData.channels)
+}
+inline ::int32_t x264FrameData::_internal_channels() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.channels_;
+}
+inline void x264FrameData::_internal_set_channels(::int32_t value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.channels_ = value;
+}
+
+// bytes image_bytes = 4;
+inline void x264FrameData::clear_image_bytes() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.image_bytes_.ClearToEmpty();
+}
+inline const std::string& x264FrameData::image_bytes() const
+    ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  // @@protoc_insertion_point(field_get:panelclone.x264FrameData.image_bytes)
+  return _internal_image_bytes();
+}
+template <typename Arg_, typename... Args_>
+inline PROTOBUF_ALWAYS_INLINE void x264FrameData::set_image_bytes(Arg_&& arg,
+                                                     Args_... args) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.image_bytes_.SetBytes(static_cast<Arg_&&>(arg), args..., GetArena());
+  // @@protoc_insertion_point(field_set:panelclone.x264FrameData.image_bytes)
+}
+inline std::string* x264FrameData::mutable_image_bytes() ABSL_ATTRIBUTE_LIFETIME_BOUND {
+  std::string* _s = _internal_mutable_image_bytes();
+  // @@protoc_insertion_point(field_mutable:panelclone.x264FrameData.image_bytes)
+  return _s;
+}
+inline const std::string& x264FrameData::_internal_image_bytes() const {
+  ::google::protobuf::internal::TSanRead(&_impl_);
+  return _impl_.image_bytes_.Get();
+}
+inline void x264FrameData::_internal_set_image_bytes(const std::string& value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.image_bytes_.Set(value, GetArena());
+}
+inline std::string* x264FrameData::_internal_mutable_image_bytes() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  return _impl_.image_bytes_.Mutable( GetArena());
+}
+inline std::string* x264FrameData::release_image_bytes() {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  // @@protoc_insertion_point(field_release:panelclone.x264FrameData.image_bytes)
+  return _impl_.image_bytes_.Release();
+}
+inline void x264FrameData::set_allocated_image_bytes(std::string* value) {
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  _impl_.image_bytes_.SetAllocated(value, GetArena());
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+        if (_impl_.image_bytes_.IsDefault()) {
+          _impl_.image_bytes_.Set("", GetArena());
+        }
+  #endif  // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:panelclone.x264FrameData.image_bytes)
 }
 
 // -------------------------------------------------------------------
