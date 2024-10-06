@@ -22,16 +22,10 @@
 #include "PubValue.hpp"
 #include "PubFloatValue.hpp"
 
-class FFMPEGDecoder;
-
-typedef std::function<void(void*, void*, int, int)> UpdateTextureFunction;
-
 class DatarefSubscriber
 {
     std::mutex lock;
     
-    FFMPEGDecoder *decoder;
-
     bool local = false;
 
     // Create ZMQ Context
@@ -57,9 +51,6 @@ class DatarefSubscriber
     panelclone::StateUpdate latest_stateUpdate;
 
     std::string _ipv4address;
-
-    UpdateTextureFunction m_textureUpdater;
-    std::vector<void*> m_pnlren_ptrs;
 
 public:
 
@@ -91,8 +82,6 @@ public:
 
     bool SetFloatOverrideFunc(const std::string & dr_name, float_value_overide_t override_func);
     bool SetFloatOverrideFuncRegex(const std::regex txt_regex, float_value_overide_t override_func);
-
-    void SetUpdateTextureFunctionAndPnlRenderers(UpdateTextureFunction func, std::vector<void*> pnlrens);
 
 private:
 

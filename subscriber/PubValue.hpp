@@ -41,7 +41,7 @@ struct PubValue
                 break;
             case panelclone::DrefValue::ValueCase::kByteVal:
             default:
-                return 0;
+                return 0.0;
                 break;
         }
     }

@@ -7,7 +7,10 @@
 
 #include "DatarefSubscriber.hpp"
 
-#include "FFMPEGDecoder.hpp"
+//#include "base64.hpp"
+#include <opencv2/core.hpp>
+#include <opencv2/imgproc.hpp>
+#include <opencv2/imgcodecs.hpp>
 
 DatarefSubscriber& DatarefSubscriber::getInstance() {
     static DatarefSubscriber instance;   // Guaranteed to be destroyed.
@@ -68,13 +71,6 @@ void DatarefSubscriber::Init()
     waiting_for_snapshot.store(false);
     received_snapshot.store(false);
 
-    decoder = new FFMPEGDecoder(4);
-    
-    std::thread thr([&]{
-        std::cout << "starting decoder..." << std::endl;
-        decoder->start();
-    });
-    thr.detach();
 }
 
 void DatarefSubscriber::Start(std::string ipv4address)
@@ -82,8 +78,13 @@ void DatarefSubscriber::Start(std::string ipv4address)
     _ipv4address = ipv4address;
 
     Init();
+
     t = std::thread(&DatarefSubscriber::SubscriberWorker, this);
     std::cout << "subscriber worker started..." << std::endl;
+
+    //t.detach();
+
+    //std::cout << "detached called..." << std::endl;
 }
 
 bool DatarefSubscriber::Ready()
@@ -302,6 +303,7 @@ void DatarefSubscriber::RequestDatarefs(std::vector<std::string>& datarefList)
 
 void DatarefSubscriber::SubscriberWorker()
 {
+
     zmq_pollitem_t items [] = {
         { subscriber, 0, ZMQ_POLLIN, 0 },
         { snapshot, 0, ZMQ_POLLIN, 0 }
@@ -423,28 +425,7 @@ void DatarefSubscriber::SubscriberWorker()
                         }
                     }
 
-                    // Check for video frame data...
-                    if (stateUpdate.has_panelframedata()) {
-                        auto imageBytesString = stateUpdate.panelframedata().image_bytes();
-                        std::cout << "Received " << imageBytesString.size() << " video bytes with (rows,cols) = (" 
-                        << stateUpdate.panelframedata().rows() << ", " 
-                        << stateUpdate.panelframedata().cols() << ")" << std::endl;
-                    
-                        decoder->pushVideoPacket(imageBytesString.data(), imageBytesString.size());
-                    
-                        void *frameData;
-                        if(decoder->grabFrame(frameData, 2)){
-                            std::cout << "Grabbed a frame..." << std::endl;
-                            if(m_textureUpdater) {
-                                for (auto pnlren_ptr : m_pnlren_ptrs) {
-                                    m_textureUpdater(pnlren_ptr, frameData, stateUpdate.panelframedata().rows(), stateUpdate.panelframedata().cols());
-                                }
-                            }
-
-                        }
-
-                    }
-                    lock.unlock();
+                    lock.unlock();                    
                 }
             }
 
@@ -578,6 +559,7 @@ void DatarefSubscriber::SubscriberWorker()
 
     }
 
+
     return;
 
 errout:
@@ -599,10 +581,4 @@ float DatarefSubscriber::GetFloatValueBeforeOverride(const int index)
     float val = recvdPubValues[index].floatValueUncorrected(); 
     lock.unlock();
     return val;
-}
-
-void DatarefSubscriber::SetUpdateTextureFunctionAndPnlRenderers(UpdateTextureFunction func, std::vector<void*> pnlrens)
-{
-    m_textureUpdater = func;
-    m_pnlren_ptrs = pnlrens;
 }
