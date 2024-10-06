@@ -187,6 +187,8 @@ void PanelTextureSubscriber::SubscriberWorker()
                         if (!img.cols) {
                             std::cout << "error: img has no size!" << std::endl;
                             return;
+                        } else {
+                            std::cout << "received image has " << img.cols << " cols and " << img.rows << " rows" << std::endl;
                         }
                         //cv::Mat img2;
 
@@ -194,8 +196,8 @@ void PanelTextureSubscriber::SubscriberWorker()
                             lock.unlock();
                             return;
                         }
-
-                        cv::resize(img,img,cv::Size(2048,2048), cv::INTER_NEAREST);  
+                        
+                        cv::imwrite("received_panel.png", img);
                         
                         if(m_textureUpdater) {
                             texture_update_lock.lock();
