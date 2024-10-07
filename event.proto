@@ -2,10 +2,14 @@ syntax = "proto3";
 
 package panelclone;
 
-message PushState {
-  oneof pushEvent {
+message PushUpdate {
+  repeated PushEvent updates = 1;
+}
+
+message PushEvent {
+  oneof event {
     DrefValue drefWrite = 1;
-    
+    DrefSend drefSend = 2;
   }
 }
 
@@ -95,4 +99,14 @@ message DrefValue {
     double doubleVal = 6;
     DrefByteValue byteVal = 7;
   } 
+}
+
+message DrefSend {
+  string dataref = 1;
+  int32 index = 2;
+  oneof value {
+    int32 intVal = 3;
+    float floatVal = 4;
+    string stringVal = 5;
+  }
 }

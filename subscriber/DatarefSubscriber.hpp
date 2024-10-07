@@ -22,6 +22,8 @@
 #include "PubValue.hpp"
 #include "PubFloatValue.hpp"
 
+typedef std::pair<std::pair<std::string, int>, float> DrefIndexedFloatValue;
+
 class DatarefSubscriber
 {
     std::mutex lock;
@@ -71,7 +73,7 @@ public:
 
     bool GetLocalSnapshot(panelclone::Snapshot & txSnapshot);
 
-    void RequestDatarefs(std::vector<std::string>& datarefList);
+    void RequestDatarefs(std::set<std::string>& datarefList);
 
     bool FindFloatValue(PubFloatValue *dr, const std::string & dr_name);
 
@@ -82,6 +84,8 @@ public:
 
     bool SetFloatOverrideFunc(const std::string & dr_name, float_value_overide_t override_func);
     bool SetFloatOverrideFuncRegex(const std::regex txt_regex, float_value_overide_t override_func);
+
+    void SendDatarefValueUpdates(std::vector<DrefIndexedFloatValue> updatedrefvals);
 
 private:
 

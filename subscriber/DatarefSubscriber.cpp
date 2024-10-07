@@ -255,7 +255,7 @@ bool DatarefSubscriber::SetFloatOverrideFuncRegex(const std::regex txt_regex, fl
     return foundmatches;
 }
 
-void DatarefSubscriber::RequestDatarefs(std::vector<std::string>& datarefList)
+void DatarefSubscriber::RequestDatarefs(std::set<std::string>& datarefList)
 {
     lock.lock();
 
@@ -429,45 +429,6 @@ void DatarefSubscriber::SubscriberWorker()
                 }
             }
 
-            /*
-            {
-                panelclone::PushState pushMessage;
-
-                auto drefvalue = pushMessage.mutable_drefwrite();
-
-                drefvalue->set_index(recvdPubValues[0].index);
-
-                if (recvdPubValues[0].chosenType == panelclone::DrefValue::ValueCase::kIntVal) {
-                    drefvalue->set_intval(1 - std::get<int>(recvdPubValues[0].value));
-                } else if (recvdPubValues[0].chosenType == panelclone::DrefValue::ValueCase::kFloatVal) {
-                    drefvalue->set_floatval(0);
-                } else if (recvdPubValues[0].chosenType == panelclone::DrefValue::ValueCase::kDoubleVal) {
-                    drefvalue->set_doubleval(0);
-                } else if (recvdPubValues[0].chosenType == panelclone::DrefValue::ValueCase::kByteVal) {
-                    //drefvalue->set
-                } else {
-                    logMsg("[ERROR] Not setting a value, unhandled chosen type!");
-                }
-
-                // Create zmq message
-                std::string data;
-                pushMessage.SerializeToString(&data);
-
-                zmq::message_t request( data.length() );
-                // Copy contents to zmq message
-                memcpy( request.data(), data.c_str(), data.length() );
-                // Send snapshot request message
-                
-                try {
-                    updater.send( request );    
-                    std::cout << "sending push message" << std::endl;
-                } catch (zmq::error_t &e) {
-                    std::cout << "zmq error, stopping..." << std::endl;
-                    goto errout;
-                }
-            }
-            */
-
             if (items[1].revents & ZMQ_POLLIN) {
                 
                 std::cout << "received snapshot message" << std::endl;
@@ -581,4 +542,40 @@ float DatarefSubscriber::GetFloatValueBeforeOverride(const int index)
     float val = recvdPubValues[index].floatValueUncorrected(); 
     lock.unlock();
     return val;
+}
+
+void DatarefSubscriber::SendDatarefValueUpdates(std::vector<DrefIndexedFloatValue> updatedrefvals)
+{
+    panelclone::PushUpdate pushMessage;
+
+    std::cout << "Have " << updatedrefvals.size() << " dref value updates to send" << std::endl;
+
+    for (auto updatedrefval : updatedrefvals) {
+
+        auto update = pushMessage.add_updates();
+
+        auto drefsend = update->mutable_drefsend();
+
+        drefsend->set_dataref(updatedrefval.first.first);
+        drefsend->set_index(updatedrefval.first.second);
+        drefsend->set_floatval(updatedrefval.second);
+    }
+
+    // Create zmq message
+    std::string data;
+    pushMessage.SerializeToString(&data);
+
+    zmq::message_t request( data.length() );
+    // Copy contents to zmq message
+    memcpy( request.data(), data.c_str(), data.length() );
+    // Send snapshot request message
+    
+    std::cout << "Dref value update message ready to send" << std::endl;
+
+    try {
+        updater.send( request );    
+        std::cout << "sending push message" << std::endl;
+    } catch (zmq::error_t &e) {
+        std::cout << "zmq error, " << e.what() << std::endl;
+    }
 }

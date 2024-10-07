@@ -112,6 +112,36 @@ struct PubValIndexDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PubValIndexDefaultTypeInternal _PubValIndex_default_instance_;
 
+inline constexpr DrefSend::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : dataref_(
+            &::google::protobuf::internal::fixed_address_empty_string,
+            ::_pbi::ConstantInitialized()),
+        index_{0},
+        value_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR DrefSend::DrefSend(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct DrefSendDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR DrefSendDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~DrefSendDefaultTypeInternal() {}
+  union {
+    DrefSend _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 DrefSendDefaultTypeInternal _DrefSend_default_instance_;
+
 inline constexpr DrefIntArrayValue::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
       : value_{0},
@@ -272,14 +302,14 @@ struct StateUpdateDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StateUpdateDefaultTypeInternal _StateUpdate_default_instance_;
 
-inline constexpr PushState::Impl_::Impl_(
+inline constexpr PushEvent::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
-      : pushEvent_{},
+      : event_{},
         _cached_size_{0},
         _oneof_case_{} {}
 
 template <typename>
-PROTOBUF_CONSTEXPR PushState::PushState(::_pbi::ConstantInitialized)
+PROTOBUF_CONSTEXPR PushEvent::PushEvent(::_pbi::ConstantInitialized)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(_class_data_.base()),
 #else   // PROTOBUF_CUSTOM_VTABLE
@@ -287,16 +317,16 @@ PROTOBUF_CONSTEXPR PushState::PushState(::_pbi::ConstantInitialized)
 #endif  // PROTOBUF_CUSTOM_VTABLE
       _impl_(::_pbi::ConstantInitialized()) {
 }
-struct PushStateDefaultTypeInternal {
-  PROTOBUF_CONSTEXPR PushStateDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
-  ~PushStateDefaultTypeInternal() {}
+struct PushEventDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PushEventDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PushEventDefaultTypeInternal() {}
   union {
-    PushState _instance;
+    PushEvent _instance;
   };
 };
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
-    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PushStateDefaultTypeInternal _PushState_default_instance_;
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PushEventDefaultTypeInternal _PushEvent_default_instance_;
 
 inline constexpr Snapshot::Impl_::Impl_(
     ::_pbi::ConstantInitialized) noexcept
@@ -322,6 +352,31 @@ struct SnapshotDefaultTypeInternal {
 
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
     PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SnapshotDefaultTypeInternal _Snapshot_default_instance_;
+
+inline constexpr PushUpdate::Impl_::Impl_(
+    ::_pbi::ConstantInitialized) noexcept
+      : updates_{},
+        _cached_size_{0} {}
+
+template <typename>
+PROTOBUF_CONSTEXPR PushUpdate::PushUpdate(::_pbi::ConstantInitialized)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(_class_data_.base()),
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(),
+#endif  // PROTOBUF_CUSTOM_VTABLE
+      _impl_(::_pbi::ConstantInitialized()) {
+}
+struct PushUpdateDefaultTypeInternal {
+  PROTOBUF_CONSTEXPR PushUpdateDefaultTypeInternal() : _instance(::_pbi::ConstantInitialized{}) {}
+  ~PushUpdateDefaultTypeInternal() {}
+  union {
+    PushUpdate _instance;
+  };
+};
+
+PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT
+    PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 PushUpdateDefaultTypeInternal _PushUpdate_default_instance_;
 }  // namespace panelclone
 static constexpr const ::_pb::EnumDescriptor**
     file_level_enum_descriptors_event_2eproto = nullptr;
@@ -331,15 +386,25 @@ const ::uint32_t
     TableStruct_event_2eproto::offsets[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
         protodesc_cold) = {
         ~0u,  // no _has_bits_
-        PROTOBUF_FIELD_OFFSET(::panelclone::PushState, _internal_metadata_),
+        PROTOBUF_FIELD_OFFSET(::panelclone::PushUpdate, _internal_metadata_),
         ~0u,  // no _extensions_
-        PROTOBUF_FIELD_OFFSET(::panelclone::PushState, _impl_._oneof_case_[0]),
+        ~0u,  // no _oneof_case_
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::panelclone::PushUpdate, _impl_.updates_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::panelclone::PushEvent, _internal_metadata_),
+        ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::panelclone::PushEvent, _impl_._oneof_case_[0]),
         ~0u,  // no _weak_field_map_
         ~0u,  // no _inlined_string_donated_
         ~0u,  // no _split_
         ~0u,  // no sizeof(Split)
         ::_pbi::kInvalidFieldOffsetTag,
-        PROTOBUF_FIELD_OFFSET(::panelclone::PushState, _impl_.pushEvent_),
+        ::_pbi::kInvalidFieldOffsetTag,
+        PROTOBUF_FIELD_OFFSET(::panelclone::PushEvent, _impl_.event_),
         PROTOBUF_FIELD_OFFSET(::panelclone::StateUpdate, _impl_._has_bits_),
         PROTOBUF_FIELD_OFFSET(::panelclone::StateUpdate, _internal_metadata_),
         ~0u,  // no _extensions_
@@ -452,24 +517,41 @@ const ::uint32_t
         ::_pbi::kInvalidFieldOffsetTag,
         ::_pbi::kInvalidFieldOffsetTag,
         PROTOBUF_FIELD_OFFSET(::panelclone::DrefValue, _impl_.value_),
+        ~0u,  // no _has_bits_
+        PROTOBUF_FIELD_OFFSET(::panelclone::DrefSend, _internal_metadata_),
+        ~0u,  // no _extensions_
+        PROTOBUF_FIELD_OFFSET(::panelclone::DrefSend, _impl_._oneof_case_[0]),
+        ~0u,  // no _weak_field_map_
+        ~0u,  // no _inlined_string_donated_
+        ~0u,  // no _split_
+        ~0u,  // no sizeof(Split)
+        PROTOBUF_FIELD_OFFSET(::panelclone::DrefSend, _impl_.dataref_),
+        PROTOBUF_FIELD_OFFSET(::panelclone::DrefSend, _impl_.index_),
+        ::_pbi::kInvalidFieldOffsetTag,
+        ::_pbi::kInvalidFieldOffsetTag,
+        ::_pbi::kInvalidFieldOffsetTag,
+        PROTOBUF_FIELD_OFFSET(::panelclone::DrefSend, _impl_.value_),
 };
 
 static const ::_pbi::MigrationSchema
     schemas[] ABSL_ATTRIBUTE_SECTION_VARIABLE(protodesc_cold) = {
-        {0, -1, -1, sizeof(::panelclone::PushState)},
-        {10, 22, -1, sizeof(::panelclone::StateUpdate)},
-        {26, -1, -1, sizeof(::panelclone::x264FrameData)},
-        {38, -1, -1, sizeof(::panelclone::PubValIndex)},
-        {49, -1, -1, sizeof(::panelclone::StateRequest)},
-        {58, -1, -1, sizeof(::panelclone::RegisterDref)},
-        {68, 77, -1, sizeof(::panelclone::Snapshot)},
-        {78, -1, -1, sizeof(::panelclone::DrefIntArrayValue)},
-        {88, -1, -1, sizeof(::panelclone::DrefFloatArrayValue)},
-        {98, -1, -1, sizeof(::panelclone::DrefByteValue)},
-        {108, -1, -1, sizeof(::panelclone::DrefValue)},
+        {0, -1, -1, sizeof(::panelclone::PushUpdate)},
+        {9, -1, -1, sizeof(::panelclone::PushEvent)},
+        {20, 32, -1, sizeof(::panelclone::StateUpdate)},
+        {36, -1, -1, sizeof(::panelclone::x264FrameData)},
+        {48, -1, -1, sizeof(::panelclone::PubValIndex)},
+        {59, -1, -1, sizeof(::panelclone::StateRequest)},
+        {68, -1, -1, sizeof(::panelclone::RegisterDref)},
+        {78, 87, -1, sizeof(::panelclone::Snapshot)},
+        {88, -1, -1, sizeof(::panelclone::DrefIntArrayValue)},
+        {98, -1, -1, sizeof(::panelclone::DrefFloatArrayValue)},
+        {108, -1, -1, sizeof(::panelclone::DrefByteValue)},
+        {118, -1, -1, sizeof(::panelclone::DrefValue)},
+        {132, -1, -1, sizeof(::panelclone::DrefSend)},
 };
 static const ::_pb::Message* const file_default_instances[] = {
-    &::panelclone::_PushState_default_instance_._instance,
+    &::panelclone::_PushUpdate_default_instance_._instance,
+    &::panelclone::_PushEvent_default_instance_._instance,
     &::panelclone::_StateUpdate_default_instance_._instance,
     &::panelclone::_x264FrameData_default_instance_._instance,
     &::panelclone::_PubValIndex_default_instance_._instance,
@@ -480,44 +562,51 @@ static const ::_pb::Message* const file_default_instances[] = {
     &::panelclone::_DrefFloatArrayValue_default_instance_._instance,
     &::panelclone::_DrefByteValue_default_instance_._instance,
     &::panelclone::_DrefValue_default_instance_._instance,
+    &::panelclone::_DrefSend_default_instance_._instance,
 };
 const char descriptor_table_protodef_event_2eproto[] ABSL_ATTRIBUTE_SECTION_VARIABLE(
     protodesc_cold) = {
-    "\n\013event.proto\022\npanelclone\"D\n\tPushState\022*"
-    "\n\tdrefWrite\030\001 \001(\0132\025.panelclone.DrefValue"
-    "H\000B\013\n\tpushEvent\"\313\001\n\013StateUpdate\022\r\n\005frame"
-    "\030\001 \001(\r\0226\n\025publishedValueIndexes\030\002 \003(\0132\027."
-    "panelclone.PubValIndex\022*\n\013drefChanges\030\003 "
-    "\003(\0132\025.panelclone.DrefValue\0226\n\016panelFrame"
-    "Data\030\004 \001(\0132\031.panelclone.x264FrameDataH\000\210"
-    "\001\001B\021\n\017_panelFrameData\"R\n\rx264FrameData\022\014"
-    "\n\004cols\030\001 \001(\005\022\014\n\004rows\030\002 \001(\005\022\020\n\010channels\030\003"
-    " \001(\005\022\023\n\013image_bytes\030\004 \001(\014\"A\n\013PubValIndex"
-    "\022\r\n\005index\030\001 \001(\005\022\017\n\007dataref\030\002 \001(\t\022\022\n\ndref"
-    "_index\030\003 \001(\005\"7\n\014StateRequest\022\'\n\005drefs\030\002 "
-    "\003(\0132\030.panelclone.RegisterDref\".\n\014Registe"
-    "rDref\022\017\n\007dataref\030\001 \001(\t\022\r\n\005index\030\002 \001(\005\":\n"
-    "\010Snapshot\022.\n\rframeSnapshot\030\002 \001(\0132\027.panel"
-    "clone.StateUpdate\"1\n\021DrefIntArrayValue\022\r"
-    "\n\005value\030\001 \001(\005\022\r\n\005index\030\002 \001(\r\"3\n\023DrefFloa"
-    "tArrayValue\022\r\n\005value\030\001 \001(\002\022\r\n\005index\030\002 \001("
-    "\r\",\n\rDrefByteValue\022\r\n\005value\030\001 \001(\014\022\014\n\004siz"
-    "e\030\002 \001(\r\"\214\001\n\tDrefValue\022\r\n\005index\030\001 \001(\r\022\020\n\006"
-    "intVal\030\002 \001(\005H\000\022\022\n\010floatVal\030\003 \001(\002H\000\022\023\n\tdo"
-    "ubleVal\030\006 \001(\001H\000\022,\n\007byteVal\030\007 \001(\0132\031.panel"
-    "clone.DrefByteValueH\000B\007\n\005valueb\006proto3"
+    "\n\013event.proto\022\npanelclone\"4\n\nPushUpdate\022"
+    "&\n\007updates\030\001 \003(\0132\025.panelclone.PushEvent\""
+    "j\n\tPushEvent\022*\n\tdrefWrite\030\001 \001(\0132\025.panelc"
+    "lone.DrefValueH\000\022(\n\010drefSend\030\002 \001(\0132\024.pan"
+    "elclone.DrefSendH\000B\007\n\005event\"\313\001\n\013StateUpd"
+    "ate\022\r\n\005frame\030\001 \001(\r\0226\n\025publishedValueInde"
+    "xes\030\002 \003(\0132\027.panelclone.PubValIndex\022*\n\013dr"
+    "efChanges\030\003 \003(\0132\025.panelclone.DrefValue\0226"
+    "\n\016panelFrameData\030\004 \001(\0132\031.panelclone.x264"
+    "FrameDataH\000\210\001\001B\021\n\017_panelFrameData\"R\n\rx26"
+    "4FrameData\022\014\n\004cols\030\001 \001(\005\022\014\n\004rows\030\002 \001(\005\022\020"
+    "\n\010channels\030\003 \001(\005\022\023\n\013image_bytes\030\004 \001(\014\"A\n"
+    "\013PubValIndex\022\r\n\005index\030\001 \001(\005\022\017\n\007dataref\030\002"
+    " \001(\t\022\022\n\ndref_index\030\003 \001(\005\"7\n\014StateRequest"
+    "\022\'\n\005drefs\030\002 \003(\0132\030.panelclone.RegisterDre"
+    "f\".\n\014RegisterDref\022\017\n\007dataref\030\001 \001(\t\022\r\n\005in"
+    "dex\030\002 \001(\005\":\n\010Snapshot\022.\n\rframeSnapshot\030\002"
+    " \001(\0132\027.panelclone.StateUpdate\"1\n\021DrefInt"
+    "ArrayValue\022\r\n\005value\030\001 \001(\005\022\r\n\005index\030\002 \001(\r"
+    "\"3\n\023DrefFloatArrayValue\022\r\n\005value\030\001 \001(\002\022\r"
+    "\n\005index\030\002 \001(\r\",\n\rDrefByteValue\022\r\n\005value\030"
+    "\001 \001(\014\022\014\n\004size\030\002 \001(\r\"\214\001\n\tDrefValue\022\r\n\005ind"
+    "ex\030\001 \001(\r\022\020\n\006intVal\030\002 \001(\005H\000\022\022\n\010floatVal\030\003"
+    " \001(\002H\000\022\023\n\tdoubleVal\030\006 \001(\001H\000\022,\n\007byteVal\030\007"
+    " \001(\0132\031.panelclone.DrefByteValueH\000B\007\n\005val"
+    "ue\"n\n\010DrefSend\022\017\n\007dataref\030\001 \001(\t\022\r\n\005index"
+    "\030\002 \001(\005\022\020\n\006intVal\030\003 \001(\005H\000\022\022\n\010floatVal\030\004 \001"
+    "(\002H\000\022\023\n\tstringVal\030\005 \001(\tH\000B\007\n\005valueb\006prot"
+    "o3"
 };
 static ::absl::once_flag descriptor_table_event_2eproto_once;
 PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_event_2eproto = {
     false,
     false,
-    918,
+    1122,
     descriptor_table_protodef_event_2eproto,
     "event.proto",
     &descriptor_table_event_2eproto_once,
     nullptr,
     0,
-    11,
+    13,
     schemas,
     file_default_instances,
     TableStruct_event_2eproto::offsets,
@@ -527,137 +616,90 @@ PROTOBUF_CONSTINIT const ::_pbi::DescriptorTable descriptor_table_event_2eproto 
 namespace panelclone {
 // ===================================================================
 
-class PushState::_Internal {
+class PushUpdate::_Internal {
  public:
-  static constexpr ::int32_t kOneofCaseOffset =
-      PROTOBUF_FIELD_OFFSET(::panelclone::PushState, _impl_._oneof_case_);
 };
 
-void PushState::set_allocated_drefwrite(::panelclone::DrefValue* drefwrite) {
-  ::google::protobuf::Arena* message_arena = GetArena();
-  clear_pushEvent();
-  if (drefwrite) {
-    ::google::protobuf::Arena* submessage_arena = drefwrite->GetArena();
-    if (message_arena != submessage_arena) {
-      drefwrite = ::google::protobuf::internal::GetOwnedMessage(message_arena, drefwrite, submessage_arena);
-    }
-    set_has_drefwrite();
-    _impl_.pushEvent_.drefwrite_ = drefwrite;
-  }
-  // @@protoc_insertion_point(field_set_allocated:panelclone.PushState.drefWrite)
-}
-PushState::PushState(::google::protobuf::Arena* arena)
+PushUpdate::PushUpdate(::google::protobuf::Arena* arena)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
   SharedCtor(arena);
-  // @@protoc_insertion_point(arena_constructor:panelclone.PushState)
+  // @@protoc_insertion_point(arena_constructor:panelclone.PushUpdate)
 }
-inline PROTOBUF_NDEBUG_INLINE PushState::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE PushUpdate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
-    const Impl_& from, const ::panelclone::PushState& from_msg)
-      : pushEvent_{},
-        _cached_size_{0},
-        _oneof_case_{from._oneof_case_[0]} {}
+    const Impl_& from, const ::panelclone::PushUpdate& from_msg)
+      : updates_{visibility, arena, from.updates_},
+        _cached_size_{0} {}
 
-PushState::PushState(
+PushUpdate::PushUpdate(
     ::google::protobuf::Arena* arena,
-    const PushState& from)
+    const PushUpdate& from)
 #if defined(PROTOBUF_CUSTOM_VTABLE)
     : ::google::protobuf::Message(arena, _class_data_.base()) {
 #else   // PROTOBUF_CUSTOM_VTABLE
     : ::google::protobuf::Message(arena) {
 #endif  // PROTOBUF_CUSTOM_VTABLE
-  PushState* const _this = this;
+  PushUpdate* const _this = this;
   (void)_this;
   _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
       from._internal_metadata_);
   new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
-  switch (pushEvent_case()) {
-    case PUSHEVENT_NOT_SET:
-      break;
-      case kDrefWrite:
-        _impl_.pushEvent_.drefwrite_ = ::google::protobuf::Message::CopyConstruct<::panelclone::DrefValue>(arena, *from._impl_.pushEvent_.drefwrite_);
-        break;
-  }
 
-  // @@protoc_insertion_point(copy_constructor:panelclone.PushState)
+  // @@protoc_insertion_point(copy_constructor:panelclone.PushUpdate)
 }
-inline PROTOBUF_NDEBUG_INLINE PushState::Impl_::Impl_(
+inline PROTOBUF_NDEBUG_INLINE PushUpdate::Impl_::Impl_(
     ::google::protobuf::internal::InternalVisibility visibility,
     ::google::protobuf::Arena* arena)
-      : pushEvent_{},
-        _cached_size_{0},
-        _oneof_case_{} {}
+      : updates_{visibility, arena},
+        _cached_size_{0} {}
 
-inline void PushState::SharedCtor(::_pb::Arena* arena) {
+inline void PushUpdate::SharedCtor(::_pb::Arena* arena) {
   new (&_impl_) Impl_(internal_visibility(), arena);
 }
-PushState::~PushState() {
-  // @@protoc_insertion_point(destructor:panelclone.PushState)
+PushUpdate::~PushUpdate() {
+  // @@protoc_insertion_point(destructor:panelclone.PushUpdate)
   _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
   SharedDtor();
 }
-inline void PushState::SharedDtor() {
+inline void PushUpdate::SharedDtor() {
   ABSL_DCHECK(GetArena() == nullptr);
-  if (has_pushEvent()) {
-    clear_pushEvent();
-  }
   _impl_.~Impl_();
 }
-
-void PushState::clear_pushEvent() {
-// @@protoc_insertion_point(one_of_clear_start:panelclone.PushState)
-  ::google::protobuf::internal::TSanWrite(&_impl_);
-  switch (pushEvent_case()) {
-    case kDrefWrite: {
-      if (GetArena() == nullptr) {
-        delete _impl_.pushEvent_.drefwrite_;
-      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
-        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.pushEvent_.drefwrite_);
-      }
-      break;
-    }
-    case PUSHEVENT_NOT_SET: {
-      break;
-    }
-  }
-  _impl_._oneof_case_[0] = PUSHEVENT_NOT_SET;
-}
-
 
 PROTOBUF_CONSTINIT
 PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
 const ::google::protobuf::MessageLite::ClassDataFull
-    PushState::_class_data_ = {
+    PushUpdate::_class_data_ = {
         ::google::protobuf::Message::ClassData{
-            &_PushState_default_instance_._instance,
+            &_PushUpdate_default_instance_._instance,
             &_table_.header,
             nullptr,  // OnDemandRegisterArenaDtor
             nullptr,  // IsInitialized
-            &PushState::MergeImpl,
+            &PushUpdate::MergeImpl,
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-            ::google::protobuf::Message::GetDeleteImpl<PushState>(),
-            ::google::protobuf::Message::GetNewImpl<PushState>(),
-            ::google::protobuf::Message::GetClearImpl<PushState>(), &PushState::ByteSizeLong,
-                &PushState::_InternalSerialize,
+            ::google::protobuf::Message::GetDeleteImpl<PushUpdate>(),
+            ::google::protobuf::Message::GetNewImpl<PushUpdate>(),
+            ::google::protobuf::Message::GetClearImpl<PushUpdate>(), &PushUpdate::ByteSizeLong,
+                &PushUpdate::_InternalSerialize,
 #endif  // PROTOBUF_CUSTOM_VTABLE
-            PROTOBUF_FIELD_OFFSET(PushState, _impl_._cached_size_),
+            PROTOBUF_FIELD_OFFSET(PushUpdate, _impl_._cached_size_),
             false,
         },
-        &PushState::kDescriptorMethods,
+        &PushUpdate::kDescriptorMethods,
         &descriptor_table_event_2eproto,
         nullptr,  // tracker
 };
-const ::google::protobuf::MessageLite::ClassData* PushState::GetClassData() const {
+const ::google::protobuf::MessageLite::ClassData* PushUpdate::GetClassData() const {
   ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
   ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
   return _class_data_.base();
 }
 PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
-const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PushState::_table_ = {
+const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PushUpdate::_table_ = {
   {
     0,  // no _has_bits_
     0, // no _extensions_
@@ -672,53 +714,59 @@ const ::_pbi::TcParseTable<0, 1, 1, 0, 2> PushState::_table_ = {
     nullptr,  // post_loop_handler
     ::_pbi::TcParser::GenericFallback,  // fallback
     #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
-    ::_pbi::TcParser::GetTable<::panelclone::PushState>(),  // to_prefetch
+    ::_pbi::TcParser::GetTable<::panelclone::PushUpdate>(),  // to_prefetch
     #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
   }, {{
-    {::_pbi::TcParser::MiniParse, {}},
+    // repeated .panelclone.PushEvent updates = 1;
+    {::_pbi::TcParser::FastMtR1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(PushUpdate, _impl_.updates_)}},
   }}, {{
     65535, 65535
   }}, {{
-    // .panelclone.DrefValue drefWrite = 1;
-    {PROTOBUF_FIELD_OFFSET(PushState, _impl_.pushEvent_.drefwrite_), _Internal::kOneofCaseOffset + 0, 0,
-    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // repeated .panelclone.PushEvent updates = 1;
+    {PROTOBUF_FIELD_OFFSET(PushUpdate, _impl_.updates_), 0, 0,
+    (0 | ::_fl::kFcRepeated | ::_fl::kMessage | ::_fl::kTvTable)},
   }}, {{
-    {::_pbi::TcParser::GetTable<::panelclone::DrefValue>()},
+    {::_pbi::TcParser::GetTable<::panelclone::PushEvent>()},
   }}, {{
   }},
 };
 
-PROTOBUF_NOINLINE void PushState::Clear() {
-// @@protoc_insertion_point(message_clear_start:panelclone.PushState)
+PROTOBUF_NOINLINE void PushUpdate::Clear() {
+// @@protoc_insertion_point(message_clear_start:panelclone.PushUpdate)
   ::google::protobuf::internal::TSanWrite(&_impl_);
   ::uint32_t cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  clear_pushEvent();
+  _impl_.updates_.Clear();
   _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
 }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::uint8_t* PushState::_InternalSerialize(
+        ::uint8_t* PushUpdate::_InternalSerialize(
             const MessageLite& base, ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) {
-          const PushState& this_ = static_cast<const PushState&>(base);
+          const PushUpdate& this_ = static_cast<const PushUpdate&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::uint8_t* PushState::_InternalSerialize(
+        ::uint8_t* PushUpdate::_InternalSerialize(
             ::uint8_t* target,
             ::google::protobuf::io::EpsCopyOutputStream* stream) const {
-          const PushState& this_ = *this;
+          const PushUpdate& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(serialize_to_array_start:panelclone.PushState)
+          // @@protoc_insertion_point(serialize_to_array_start:panelclone.PushUpdate)
           ::uint32_t cached_has_bits = 0;
           (void)cached_has_bits;
 
-          // .panelclone.DrefValue drefWrite = 1;
-          if (this_.pushEvent_case() == kDrefWrite) {
-            target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
-                1, *this_._impl_.pushEvent_.drefwrite_, this_._impl_.pushEvent_.drefwrite_->GetCachedSize(), target,
-                stream);
+          // repeated .panelclone.PushEvent updates = 1;
+          for (unsigned i = 0, n = static_cast<unsigned>(
+                                   this_._internal_updates_size());
+               i < n; i++) {
+            const auto& repfield = this_._internal_updates().Get(i);
+            target =
+                ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                    1, repfield, repfield.GetCachedSize(),
+                    target, stream);
           }
 
           if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
@@ -726,32 +774,338 @@ PROTOBUF_NOINLINE void PushState::Clear() {
                 ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
                     this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
           }
-          // @@protoc_insertion_point(serialize_to_array_end:panelclone.PushState)
+          // @@protoc_insertion_point(serialize_to_array_end:panelclone.PushUpdate)
           return target;
         }
 
 #if defined(PROTOBUF_CUSTOM_VTABLE)
-        ::size_t PushState::ByteSizeLong(const MessageLite& base) {
-          const PushState& this_ = static_cast<const PushState&>(base);
+        ::size_t PushUpdate::ByteSizeLong(const MessageLite& base) {
+          const PushUpdate& this_ = static_cast<const PushUpdate&>(base);
 #else   // PROTOBUF_CUSTOM_VTABLE
-        ::size_t PushState::ByteSizeLong() const {
-          const PushState& this_ = *this;
+        ::size_t PushUpdate::ByteSizeLong() const {
+          const PushUpdate& this_ = *this;
 #endif  // PROTOBUF_CUSTOM_VTABLE
-          // @@protoc_insertion_point(message_byte_size_start:panelclone.PushState)
+          // @@protoc_insertion_point(message_byte_size_start:panelclone.PushUpdate)
           ::size_t total_size = 0;
 
           ::uint32_t cached_has_bits = 0;
           // Prevent compiler warnings about cached_has_bits being unused
           (void)cached_has_bits;
 
-          switch (this_.pushEvent_case()) {
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // repeated .panelclone.PushEvent updates = 1;
+             {
+              total_size += 1UL * this_._internal_updates_size();
+              for (const auto& msg : this_._internal_updates()) {
+                total_size += ::google::protobuf::internal::WireFormatLite::MessageSize(msg);
+              }
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void PushUpdate::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PushUpdate*>(&to_msg);
+  auto& from = static_cast<const PushUpdate&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:panelclone.PushUpdate)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  _this->_internal_mutable_updates()->MergeFrom(
+      from._internal_updates());
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void PushUpdate::CopyFrom(const PushUpdate& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:panelclone.PushUpdate)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void PushUpdate::InternalSwap(PushUpdate* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  _impl_.updates_.InternalSwap(&other->_impl_.updates_);
+}
+
+::google::protobuf::Metadata PushUpdate::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class PushEvent::_Internal {
+ public:
+  static constexpr ::int32_t kOneofCaseOffset =
+      PROTOBUF_FIELD_OFFSET(::panelclone::PushEvent, _impl_._oneof_case_);
+};
+
+void PushEvent::set_allocated_drefwrite(::panelclone::DrefValue* drefwrite) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_event();
+  if (drefwrite) {
+    ::google::protobuf::Arena* submessage_arena = drefwrite->GetArena();
+    if (message_arena != submessage_arena) {
+      drefwrite = ::google::protobuf::internal::GetOwnedMessage(message_arena, drefwrite, submessage_arena);
+    }
+    set_has_drefwrite();
+    _impl_.event_.drefwrite_ = drefwrite;
+  }
+  // @@protoc_insertion_point(field_set_allocated:panelclone.PushEvent.drefWrite)
+}
+void PushEvent::set_allocated_drefsend(::panelclone::DrefSend* drefsend) {
+  ::google::protobuf::Arena* message_arena = GetArena();
+  clear_event();
+  if (drefsend) {
+    ::google::protobuf::Arena* submessage_arena = drefsend->GetArena();
+    if (message_arena != submessage_arena) {
+      drefsend = ::google::protobuf::internal::GetOwnedMessage(message_arena, drefsend, submessage_arena);
+    }
+    set_has_drefsend();
+    _impl_.event_.drefsend_ = drefsend;
+  }
+  // @@protoc_insertion_point(field_set_allocated:panelclone.PushEvent.drefSend)
+}
+PushEvent::PushEvent(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:panelclone.PushEvent)
+}
+inline PROTOBUF_NDEBUG_INLINE PushEvent::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::panelclone::PushEvent& from_msg)
+      : event_{},
+        _cached_size_{0},
+        _oneof_case_{from._oneof_case_[0]} {}
+
+PushEvent::PushEvent(
+    ::google::protobuf::Arena* arena,
+    const PushEvent& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  PushEvent* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  switch (event_case()) {
+    case EVENT_NOT_SET:
+      break;
+      case kDrefWrite:
+        _impl_.event_.drefwrite_ = ::google::protobuf::Message::CopyConstruct<::panelclone::DrefValue>(arena, *from._impl_.event_.drefwrite_);
+        break;
+      case kDrefSend:
+        _impl_.event_.drefsend_ = ::google::protobuf::Message::CopyConstruct<::panelclone::DrefSend>(arena, *from._impl_.event_.drefsend_);
+        break;
+  }
+
+  // @@protoc_insertion_point(copy_constructor:panelclone.PushEvent)
+}
+inline PROTOBUF_NDEBUG_INLINE PushEvent::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : event_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+inline void PushEvent::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+}
+PushEvent::~PushEvent() {
+  // @@protoc_insertion_point(destructor:panelclone.PushEvent)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void PushEvent::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  if (has_event()) {
+    clear_event();
+  }
+  _impl_.~Impl_();
+}
+
+void PushEvent::clear_event() {
+// @@protoc_insertion_point(one_of_clear_start:panelclone.PushEvent)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  switch (event_case()) {
+    case kDrefWrite: {
+      if (GetArena() == nullptr) {
+        delete _impl_.event_.drefwrite_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.event_.drefwrite_);
+      }
+      break;
+    }
+    case kDrefSend: {
+      if (GetArena() == nullptr) {
+        delete _impl_.event_.drefsend_;
+      } else if (::google::protobuf::internal::DebugHardenClearOneofMessageOnArena()) {
+        ::google::protobuf::internal::MaybePoisonAfterClear(_impl_.event_.drefsend_);
+      }
+      break;
+    }
+    case EVENT_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = EVENT_NOT_SET;
+}
+
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    PushEvent::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_PushEvent_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &PushEvent::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<PushEvent>(),
+            ::google::protobuf::Message::GetNewImpl<PushEvent>(),
+            ::google::protobuf::Message::GetClearImpl<PushEvent>(), &PushEvent::ByteSizeLong,
+                &PushEvent::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(PushEvent, _impl_._cached_size_),
+            false,
+        },
+        &PushEvent::kDescriptorMethods,
+        &descriptor_table_event_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* PushEvent::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<0, 2, 2, 0, 2> PushEvent::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    2, 0,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967292,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    2,  // num_field_entries
+    2,  // num_aux_entries
+    offsetof(decltype(_table_), aux_entries),
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::panelclone::PushEvent>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    {::_pbi::TcParser::MiniParse, {}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // .panelclone.DrefValue drefWrite = 1;
+    {PROTOBUF_FIELD_OFFSET(PushEvent, _impl_.event_.drefwrite_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+    // .panelclone.DrefSend drefSend = 2;
+    {PROTOBUF_FIELD_OFFSET(PushEvent, _impl_.event_.drefsend_), _Internal::kOneofCaseOffset + 0, 1,
+    (0 | ::_fl::kFcOneof | ::_fl::kMessage | ::_fl::kTvTable)},
+  }}, {{
+    {::_pbi::TcParser::GetTable<::panelclone::DrefValue>()},
+    {::_pbi::TcParser::GetTable<::panelclone::DrefSend>()},
+  }}, {{
+  }},
+};
+
+PROTOBUF_NOINLINE void PushEvent::Clear() {
+// @@protoc_insertion_point(message_clear_start:panelclone.PushEvent)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  clear_event();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* PushEvent::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const PushEvent& this_ = static_cast<const PushEvent&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* PushEvent::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const PushEvent& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:panelclone.PushEvent)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          switch (this_.event_case()) {
+            case kDrefWrite: {
+              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                  1, *this_._impl_.event_.drefwrite_, this_._impl_.event_.drefwrite_->GetCachedSize(), target,
+                  stream);
+              break;
+            }
+            case kDrefSend: {
+              target = ::google::protobuf::internal::WireFormatLite::InternalWriteMessage(
+                  2, *this_._impl_.event_.drefsend_, this_._impl_.event_.drefsend_->GetCachedSize(), target,
+                  stream);
+              break;
+            }
+            default:
+              break;
+          }
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:panelclone.PushEvent)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t PushEvent::ByteSizeLong(const MessageLite& base) {
+          const PushEvent& this_ = static_cast<const PushEvent&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t PushEvent::ByteSizeLong() const {
+          const PushEvent& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:panelclone.PushEvent)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          switch (this_.event_case()) {
             // .panelclone.DrefValue drefWrite = 1;
             case kDrefWrite: {
               total_size += 1 +
-                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.pushEvent_.drefwrite_);
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.event_.drefwrite_);
               break;
             }
-            case PUSHEVENT_NOT_SET: {
+            // .panelclone.DrefSend drefSend = 2;
+            case kDrefSend: {
+              total_size += 1 +
+                            ::google::protobuf::internal::WireFormatLite::MessageSize(*this_._impl_.event_.drefsend_);
+              break;
+            }
+            case EVENT_NOT_SET: {
               break;
             }
           }
@@ -759,11 +1113,11 @@ PROTOBUF_NOINLINE void PushState::Clear() {
                                                      &this_._impl_._cached_size_);
         }
 
-void PushState::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
-  auto* const _this = static_cast<PushState*>(&to_msg);
-  auto& from = static_cast<const PushState&>(from_msg);
+void PushEvent::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<PushEvent*>(&to_msg);
+  auto& from = static_cast<const PushEvent&>(from_msg);
   ::google::protobuf::Arena* arena = _this->GetArena();
-  // @@protoc_insertion_point(class_specific_merge_from_start:panelclone.PushState)
+  // @@protoc_insertion_point(class_specific_merge_from_start:panelclone.PushEvent)
   ABSL_DCHECK_NE(&from, _this);
   ::uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
@@ -773,7 +1127,7 @@ void PushState::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
     const bool oneof_needs_init = oneof_to_case != oneof_from_case;
     if (oneof_needs_init) {
       if (oneof_to_case != 0) {
-        _this->clear_pushEvent();
+        _this->clear_event();
       }
       _this->_impl_._oneof_case_[0] = oneof_from_case;
     }
@@ -781,36 +1135,45 @@ void PushState::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::googl
     switch (oneof_from_case) {
       case kDrefWrite: {
         if (oneof_needs_init) {
-          _this->_impl_.pushEvent_.drefwrite_ =
-              ::google::protobuf::Message::CopyConstruct<::panelclone::DrefValue>(arena, *from._impl_.pushEvent_.drefwrite_);
+          _this->_impl_.event_.drefwrite_ =
+              ::google::protobuf::Message::CopyConstruct<::panelclone::DrefValue>(arena, *from._impl_.event_.drefwrite_);
         } else {
-          _this->_impl_.pushEvent_.drefwrite_->MergeFrom(from._internal_drefwrite());
+          _this->_impl_.event_.drefwrite_->MergeFrom(from._internal_drefwrite());
         }
         break;
       }
-      case PUSHEVENT_NOT_SET:
+      case kDrefSend: {
+        if (oneof_needs_init) {
+          _this->_impl_.event_.drefsend_ =
+              ::google::protobuf::Message::CopyConstruct<::panelclone::DrefSend>(arena, *from._impl_.event_.drefsend_);
+        } else {
+          _this->_impl_.event_.drefsend_->MergeFrom(from._internal_drefsend());
+        }
+        break;
+      }
+      case EVENT_NOT_SET:
         break;
     }
   }
   _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
 }
 
-void PushState::CopyFrom(const PushState& from) {
-// @@protoc_insertion_point(class_specific_copy_from_start:panelclone.PushState)
+void PushEvent::CopyFrom(const PushEvent& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:panelclone.PushEvent)
   if (&from == this) return;
   Clear();
   MergeFrom(from);
 }
 
 
-void PushState::InternalSwap(PushState* PROTOBUF_RESTRICT other) {
+void PushEvent::InternalSwap(PushEvent* PROTOBUF_RESTRICT other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(_impl_.pushEvent_, other->_impl_.pushEvent_);
+  swap(_impl_.event_, other->_impl_.event_);
   swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
-::google::protobuf::Metadata PushState::GetMetadata() const {
+::google::protobuf::Metadata PushEvent::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // ===================================================================
@@ -3563,6 +3926,390 @@ void DrefValue::InternalSwap(DrefValue* PROTOBUF_RESTRICT other) {
 }
 
 ::google::protobuf::Metadata DrefValue::GetMetadata() const {
+  return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
+}
+// ===================================================================
+
+class DrefSend::_Internal {
+ public:
+  static constexpr ::int32_t kOneofCaseOffset =
+      PROTOBUF_FIELD_OFFSET(::panelclone::DrefSend, _impl_._oneof_case_);
+};
+
+DrefSend::DrefSend(::google::protobuf::Arena* arena)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  SharedCtor(arena);
+  // @@protoc_insertion_point(arena_constructor:panelclone.DrefSend)
+}
+inline PROTOBUF_NDEBUG_INLINE DrefSend::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility, ::google::protobuf::Arena* arena,
+    const Impl_& from, const ::panelclone::DrefSend& from_msg)
+      : dataref_(arena, from.dataref_),
+        value_{},
+        _cached_size_{0},
+        _oneof_case_{from._oneof_case_[0]} {}
+
+DrefSend::DrefSend(
+    ::google::protobuf::Arena* arena,
+    const DrefSend& from)
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+    : ::google::protobuf::Message(arena, _class_data_.base()) {
+#else   // PROTOBUF_CUSTOM_VTABLE
+    : ::google::protobuf::Message(arena) {
+#endif  // PROTOBUF_CUSTOM_VTABLE
+  DrefSend* const _this = this;
+  (void)_this;
+  _internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(
+      from._internal_metadata_);
+  new (&_impl_) Impl_(internal_visibility(), arena, from._impl_, from);
+  _impl_.index_ = from._impl_.index_;
+  switch (value_case()) {
+    case VALUE_NOT_SET:
+      break;
+      case kIntVal:
+        _impl_.value_.intval_ = from._impl_.value_.intval_;
+        break;
+      case kFloatVal:
+        _impl_.value_.floatval_ = from._impl_.value_.floatval_;
+        break;
+      case kStringVal:
+        new (&_impl_.value_.stringval_) decltype(_impl_.value_.stringval_){arena, from._impl_.value_.stringval_};
+        break;
+  }
+
+  // @@protoc_insertion_point(copy_constructor:panelclone.DrefSend)
+}
+inline PROTOBUF_NDEBUG_INLINE DrefSend::Impl_::Impl_(
+    ::google::protobuf::internal::InternalVisibility visibility,
+    ::google::protobuf::Arena* arena)
+      : dataref_(arena),
+        value_{},
+        _cached_size_{0},
+        _oneof_case_{} {}
+
+inline void DrefSend::SharedCtor(::_pb::Arena* arena) {
+  new (&_impl_) Impl_(internal_visibility(), arena);
+  _impl_.index_ = {};
+}
+DrefSend::~DrefSend() {
+  // @@protoc_insertion_point(destructor:panelclone.DrefSend)
+  _internal_metadata_.Delete<::google::protobuf::UnknownFieldSet>();
+  SharedDtor();
+}
+inline void DrefSend::SharedDtor() {
+  ABSL_DCHECK(GetArena() == nullptr);
+  _impl_.dataref_.Destroy();
+  if (has_value()) {
+    clear_value();
+  }
+  _impl_.~Impl_();
+}
+
+void DrefSend::clear_value() {
+// @@protoc_insertion_point(one_of_clear_start:panelclone.DrefSend)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  switch (value_case()) {
+    case kIntVal: {
+      // No need to clear
+      break;
+    }
+    case kFloatVal: {
+      // No need to clear
+      break;
+    }
+    case kStringVal: {
+      _impl_.value_.stringval_.Destroy();
+      break;
+    }
+    case VALUE_NOT_SET: {
+      break;
+    }
+  }
+  _impl_._oneof_case_[0] = VALUE_NOT_SET;
+}
+
+
+PROTOBUF_CONSTINIT
+PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::google::protobuf::MessageLite::ClassDataFull
+    DrefSend::_class_data_ = {
+        ::google::protobuf::Message::ClassData{
+            &_DrefSend_default_instance_._instance,
+            &_table_.header,
+            nullptr,  // OnDemandRegisterArenaDtor
+            nullptr,  // IsInitialized
+            &DrefSend::MergeImpl,
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+            ::google::protobuf::Message::GetDeleteImpl<DrefSend>(),
+            ::google::protobuf::Message::GetNewImpl<DrefSend>(),
+            ::google::protobuf::Message::GetClearImpl<DrefSend>(), &DrefSend::ByteSizeLong,
+                &DrefSend::_InternalSerialize,
+#endif  // PROTOBUF_CUSTOM_VTABLE
+            PROTOBUF_FIELD_OFFSET(DrefSend, _impl_._cached_size_),
+            false,
+        },
+        &DrefSend::kDescriptorMethods,
+        &descriptor_table_event_2eproto,
+        nullptr,  // tracker
+};
+const ::google::protobuf::MessageLite::ClassData* DrefSend::GetClassData() const {
+  ::google::protobuf::internal::PrefetchToLocalCache(&_class_data_);
+  ::google::protobuf::internal::PrefetchToLocalCache(_class_data_.tc_table);
+  return _class_data_.base();
+}
+PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1
+const ::_pbi::TcParseTable<1, 5, 0, 44, 2> DrefSend::_table_ = {
+  {
+    0,  // no _has_bits_
+    0, // no _extensions_
+    5, 8,  // max_field_number, fast_idx_mask
+    offsetof(decltype(_table_), field_lookup_table),
+    4294967264,  // skipmap
+    offsetof(decltype(_table_), field_entries),
+    5,  // num_field_entries
+    0,  // num_aux_entries
+    offsetof(decltype(_table_), field_names),  // no aux_entries
+    _class_data_.base(),
+    nullptr,  // post_loop_handler
+    ::_pbi::TcParser::GenericFallback,  // fallback
+    #ifdef PROTOBUF_PREFETCH_PARSE_TABLE
+    ::_pbi::TcParser::GetTable<::panelclone::DrefSend>(),  // to_prefetch
+    #endif  // PROTOBUF_PREFETCH_PARSE_TABLE
+  }, {{
+    // int32 index = 2;
+    {::_pbi::TcParser::SingularVarintNoZag1<::uint32_t, offsetof(DrefSend, _impl_.index_), 63>(),
+     {16, 63, 0, PROTOBUF_FIELD_OFFSET(DrefSend, _impl_.index_)}},
+    // string dataref = 1;
+    {::_pbi::TcParser::FastUS1,
+     {10, 63, 0, PROTOBUF_FIELD_OFFSET(DrefSend, _impl_.dataref_)}},
+  }}, {{
+    65535, 65535
+  }}, {{
+    // string dataref = 1;
+    {PROTOBUF_FIELD_OFFSET(DrefSend, _impl_.dataref_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kUtf8String | ::_fl::kRepAString)},
+    // int32 index = 2;
+    {PROTOBUF_FIELD_OFFSET(DrefSend, _impl_.index_), 0, 0,
+    (0 | ::_fl::kFcSingular | ::_fl::kInt32)},
+    // int32 intVal = 3;
+    {PROTOBUF_FIELD_OFFSET(DrefSend, _impl_.value_.intval_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kInt32)},
+    // float floatVal = 4;
+    {PROTOBUF_FIELD_OFFSET(DrefSend, _impl_.value_.floatval_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kFloat)},
+    // string stringVal = 5;
+    {PROTOBUF_FIELD_OFFSET(DrefSend, _impl_.value_.stringval_), _Internal::kOneofCaseOffset + 0, 0,
+    (0 | ::_fl::kFcOneof | ::_fl::kUtf8String | ::_fl::kRepAString)},
+  }},
+  // no aux_entries
+  {{
+    "\23\7\0\0\0\11\0\0"
+    "panelclone.DrefSend"
+    "dataref"
+    "stringVal"
+  }},
+};
+
+PROTOBUF_NOINLINE void DrefSend::Clear() {
+// @@protoc_insertion_point(message_clear_start:panelclone.DrefSend)
+  ::google::protobuf::internal::TSanWrite(&_impl_);
+  ::uint32_t cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  _impl_.dataref_.ClearToEmpty();
+  _impl_.index_ = 0;
+  clear_value();
+  _internal_metadata_.Clear<::google::protobuf::UnknownFieldSet>();
+}
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::uint8_t* DrefSend::_InternalSerialize(
+            const MessageLite& base, ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) {
+          const DrefSend& this_ = static_cast<const DrefSend&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::uint8_t* DrefSend::_InternalSerialize(
+            ::uint8_t* target,
+            ::google::protobuf::io::EpsCopyOutputStream* stream) const {
+          const DrefSend& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(serialize_to_array_start:panelclone.DrefSend)
+          ::uint32_t cached_has_bits = 0;
+          (void)cached_has_bits;
+
+          // string dataref = 1;
+          if (!this_._internal_dataref().empty()) {
+            const std::string& _s = this_._internal_dataref();
+            ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "panelclone.DrefSend.dataref");
+            target = stream->WriteStringMaybeAliased(1, _s, target);
+          }
+
+          // int32 index = 2;
+          if (this_._internal_index() != 0) {
+            target = ::google::protobuf::internal::WireFormatLite::
+                WriteInt32ToArrayWithField<2>(
+                    stream, this_._internal_index(), target);
+          }
+
+          switch (this_.value_case()) {
+            case kIntVal: {
+              target = ::google::protobuf::internal::WireFormatLite::
+                  WriteInt32ToArrayWithField<3>(
+                      stream, this_._internal_intval(), target);
+              break;
+            }
+            case kFloatVal: {
+              target = stream->EnsureSpace(target);
+              target = ::_pbi::WireFormatLite::WriteFloatToArray(
+                  4, this_._internal_floatval(), target);
+              break;
+            }
+            case kStringVal: {
+              const std::string& _s = this_._internal_stringval();
+              ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+                  _s.data(), static_cast<int>(_s.length()), ::google::protobuf::internal::WireFormatLite::SERIALIZE, "panelclone.DrefSend.stringVal");
+              target = stream->WriteStringMaybeAliased(5, _s, target);
+              break;
+            }
+            default:
+              break;
+          }
+          if (PROTOBUF_PREDICT_FALSE(this_._internal_metadata_.have_unknown_fields())) {
+            target =
+                ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
+                    this_._internal_metadata_.unknown_fields<::google::protobuf::UnknownFieldSet>(::google::protobuf::UnknownFieldSet::default_instance), target, stream);
+          }
+          // @@protoc_insertion_point(serialize_to_array_end:panelclone.DrefSend)
+          return target;
+        }
+
+#if defined(PROTOBUF_CUSTOM_VTABLE)
+        ::size_t DrefSend::ByteSizeLong(const MessageLite& base) {
+          const DrefSend& this_ = static_cast<const DrefSend&>(base);
+#else   // PROTOBUF_CUSTOM_VTABLE
+        ::size_t DrefSend::ByteSizeLong() const {
+          const DrefSend& this_ = *this;
+#endif  // PROTOBUF_CUSTOM_VTABLE
+          // @@protoc_insertion_point(message_byte_size_start:panelclone.DrefSend)
+          ::size_t total_size = 0;
+
+          ::uint32_t cached_has_bits = 0;
+          // Prevent compiler warnings about cached_has_bits being unused
+          (void)cached_has_bits;
+
+          ::_pbi::Prefetch5LinesFrom7Lines(&this_);
+           {
+            // string dataref = 1;
+            if (!this_._internal_dataref().empty()) {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_dataref());
+            }
+            // int32 index = 2;
+            if (this_._internal_index() != 0) {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_index());
+            }
+          }
+          switch (this_.value_case()) {
+            // int32 intVal = 3;
+            case kIntVal: {
+              total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(
+                  this_._internal_intval());
+              break;
+            }
+            // float floatVal = 4;
+            case kFloatVal: {
+              total_size += 5;
+              break;
+            }
+            // string stringVal = 5;
+            case kStringVal: {
+              total_size += 1 + ::google::protobuf::internal::WireFormatLite::StringSize(
+                                              this_._internal_stringval());
+              break;
+            }
+            case VALUE_NOT_SET: {
+              break;
+            }
+          }
+          return this_.MaybeComputeUnknownFieldsSize(total_size,
+                                                     &this_._impl_._cached_size_);
+        }
+
+void DrefSend::MergeImpl(::google::protobuf::MessageLite& to_msg, const ::google::protobuf::MessageLite& from_msg) {
+  auto* const _this = static_cast<DrefSend*>(&to_msg);
+  auto& from = static_cast<const DrefSend&>(from_msg);
+  ::google::protobuf::Arena* arena = _this->GetArena();
+  // @@protoc_insertion_point(class_specific_merge_from_start:panelclone.DrefSend)
+  ABSL_DCHECK_NE(&from, _this);
+  ::uint32_t cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (!from._internal_dataref().empty()) {
+    _this->_internal_set_dataref(from._internal_dataref());
+  }
+  if (from._internal_index() != 0) {
+    _this->_impl_.index_ = from._impl_.index_;
+  }
+  if (const uint32_t oneof_from_case = from._impl_._oneof_case_[0]) {
+    const uint32_t oneof_to_case = _this->_impl_._oneof_case_[0];
+    const bool oneof_needs_init = oneof_to_case != oneof_from_case;
+    if (oneof_needs_init) {
+      if (oneof_to_case != 0) {
+        _this->clear_value();
+      }
+      _this->_impl_._oneof_case_[0] = oneof_from_case;
+    }
+
+    switch (oneof_from_case) {
+      case kIntVal: {
+        _this->_impl_.value_.intval_ = from._impl_.value_.intval_;
+        break;
+      }
+      case kFloatVal: {
+        _this->_impl_.value_.floatval_ = from._impl_.value_.floatval_;
+        break;
+      }
+      case kStringVal: {
+        if (oneof_needs_init) {
+          _this->_impl_.value_.stringval_.InitDefault();
+        }
+        _this->_impl_.value_.stringval_.Set(from._internal_stringval(), arena);
+        break;
+      }
+      case VALUE_NOT_SET:
+        break;
+    }
+  }
+  _this->_internal_metadata_.MergeFrom<::google::protobuf::UnknownFieldSet>(from._internal_metadata_);
+}
+
+void DrefSend::CopyFrom(const DrefSend& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:panelclone.DrefSend)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+
+void DrefSend::InternalSwap(DrefSend* PROTOBUF_RESTRICT other) {
+  using std::swap;
+  auto* arena = GetArena();
+  ABSL_DCHECK_EQ(arena, other->GetArena());
+  _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::_pbi::ArenaStringPtr::InternalSwap(&_impl_.dataref_, &other->_impl_.dataref_, arena);
+        swap(_impl_.index_, other->_impl_.index_);
+  swap(_impl_.value_, other->_impl_.value_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
+}
+
+::google::protobuf::Metadata DrefSend::GetMetadata() const {
   return ::google::protobuf::Message::GetMetadataImpl(GetClassData()->full());
 }
 // @@protoc_insertion_point(namespace_scope)
