@@ -180,16 +180,15 @@ void PanelTextureSubscriber::SubscriberWorker()
                         
                     auto lambda = [v, thisNonce, this]() {
                         
-                        cv::Mat img = cv::imdecode(cv::Mat(1, v->size(), CV_8UC1, v->data()), cv::IMREAD_COLOR);
+                        cv::Mat img = cv::imdecode(cv::Mat(1, v->size(), CV_8UC1, v->data()),  cv::IMREAD_UNCHANGED);
                         
                         delete v;
                         
                         if (!img.cols) {
                             std::cout << "error: img has no size!" << std::endl;
                             return;
-                        } else {
-                            std::cout << "received image has " << img.cols << " cols and " << img.rows << " rows" << std::endl;
                         }
+                        
                         //cv::Mat img2;
 
                         if (thisNonce <= latest_rendered_nonce) {
@@ -197,14 +196,15 @@ void PanelTextureSubscriber::SubscriberWorker()
                             return;
                         }
                         
-                        cv::imwrite("received_panel.png", img);
-                        
+                        //cv::cvtColor(img, img, cv::COLOR_BGR2RGB);
+                        //cv::resize(img, img, cv::Size(2048,2048), cv::INTER_NEAREST);  
+
                         if(m_textureUpdater) {
                             texture_update_lock.lock();
                             if (thisNonce > latest_rendered_nonce) {
                                 for (auto pnlren_ptr : m_pnlren_ptrs) {
                                     //std::cout << "will send texture update..." << std::endl;
-                                    m_textureUpdater(pnlren_ptr, img.data, 1024, 1024);
+                                    m_textureUpdater(pnlren_ptr, img.data, img.cols, img.rows);
                                 }
                                 latest_rendered_nonce = thisNonce;
                             }
@@ -229,7 +229,7 @@ void PanelTextureSubscriber::SubscriberWorker()
 
                     lock.unlock();
 
-                    std::this_thread::sleep_for( std::chrono::milliseconds(30) );
+                    std::this_thread::sleep_for( std::chrono::milliseconds(10) );
                     
                 }
 
