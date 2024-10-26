@@ -1,4 +1,5 @@
 #!/bin/bash
 echo 'Running Script'   
-./protoc-28.2-osx-universal_binary/bin/protoc event.proto --cpp_out=./
+./protoc-28.2-osx-universal_binary/bin/protoc event.proto --cpp_out=./ --python_out=./
+./protoc-28.2-osx-universal_binary/bin/protoc xpilot.proto --cpp_out=./ --python_out=./
 echo 'Done'

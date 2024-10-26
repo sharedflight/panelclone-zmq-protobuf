@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package xpilot;
+
+message RcvdMessage {
+  string message = 1;
+}
+
