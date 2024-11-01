@@ -77,6 +77,8 @@ public:
 
     bool FindFloatValue(PubFloatValue *dr, const std::string & dr_name);
 
+    bool FindFloatValue(PubFloatValue *dr, const std::string & dataref, const int dref_index);
+
     bool HavePubValue(std::string dataref, int dref_index);
 
     float GetFloatValue(const int index);

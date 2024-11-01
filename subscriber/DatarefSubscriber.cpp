@@ -193,6 +193,11 @@ bool DatarefSubscriber::FindFloatValue(PubFloatValue *dr, const std::string & dr
 
     auto [dataref, dref_index] = datarefAndIndex(dr_name);
 
+    return FindFloatValue(dr, dataref, dref_index);
+}
+
+bool DatarefSubscriber::FindFloatValue(PubFloatValue *dr, const std::string & dataref, const int dref_index) {
+
     //     int index;
     // int dref_index;
     // float value;
