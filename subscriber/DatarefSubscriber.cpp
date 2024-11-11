@@ -309,7 +309,7 @@ void DatarefSubscriber::RequestDatarefs(std::set<std::string>& datarefList)
 void DatarefSubscriber::SubscriberWorker()
 {
 
-    zmq_pollitem_t items [] = {
+    zmq_pollitem_t pollitems[2] = {
         { subscriber, 0, ZMQ_POLLIN, 0 },
         { snapshot, 0, ZMQ_POLLIN, 0 }
     };
@@ -319,9 +319,9 @@ void DatarefSubscriber::SubscriberWorker()
         try {
         
             zmq::message_t message;
-            zmq::poll (&items[0], 2, 0);
+            zmq::poll (&pollitems[0], 2, 0);
             
-            if (!waiting_for_snapshot.load() && items[0].revents & ZMQ_POLLIN) {
+            if (!waiting_for_snapshot.load() && pollitems[0].revents & ZMQ_POLLIN) {
                 
                 std::vector<zmq::message_t> msgs;
                 auto ret = zmq::recv_multipart(subscriber, std::back_inserter(msgs));
@@ -385,6 +385,7 @@ void DatarefSubscriber::SubscriberWorker()
                         newPubValue.chosenType = panelclone::DrefValue::ValueCase::VALUE_NOT_SET;
 
                         recvdPubValues[newPubValue.index] = newPubValue;
+
                     }
 
                     
@@ -434,7 +435,7 @@ void DatarefSubscriber::SubscriberWorker()
                 }
             }
 
-            if (items[1].revents & ZMQ_POLLIN) {
+            if (pollitems[1].revents & ZMQ_POLLIN) {
                 
                 std::cout << "received snapshot message" << std::endl;
 
@@ -476,7 +477,7 @@ void DatarefSubscriber::SubscriberWorker()
                         newPubValue.dataref = pubvalindex.dataref();
                         newPubValue.dref_index = pubvalindex.dref_index();
                         newPubValue.chosenType = panelclone::DrefValue::ValueCase::VALUE_NOT_SET;
-
+                        
                         recvdPubValues[newPubValue.index] = newPubValue;
                     }
 

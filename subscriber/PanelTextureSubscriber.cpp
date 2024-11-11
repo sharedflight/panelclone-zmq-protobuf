@@ -91,7 +91,7 @@ void PanelTextureSubscriber::SubscriberWorker()
 {
     Thread::Pool decoderPool(4);
 
-    int FRAME_TEST = 20;
+    int FRAME_TEST = 100;
     std::chrono::high_resolution_clock::time_point beg, end;
     
     //cv::setNumThreads(8);
@@ -106,7 +106,7 @@ void PanelTextureSubscriber::SubscriberWorker()
     while (keep_running.load()) {
 
         try {
-        
+    
             zmq::message_t message;
             zmq::poll (&items[0], 1, 0);
             
@@ -166,8 +166,6 @@ void PanelTextureSubscriber::SubscriberWorker()
 
                     assert(msg_field == 2);
 
-                    //std::cout << "received nonce is " << lastNonce << std::endl;
-
                     if (decoderPool.PendingTasksSize() > 4) {
                         continue;
                     }
@@ -224,7 +222,7 @@ void PanelTextureSubscriber::SubscriberWorker()
                         vid_frames_sent = 0;
 
                         // Displaying the elapsed time
-                        std::cout << "FPS for " << FRAME_TEST << " frames: " << FRAME_TEST * 1000 / duration.count() << std::endl;
+                        //std::cout << "FPS for " << FRAME_TEST << " frames: " << FRAME_TEST * 1000 / duration.count() << std::endl;
                     }
 
                     lock.unlock();
